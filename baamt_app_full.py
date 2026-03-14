@@ -3,14 +3,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from fpdf import FPDF
 
-st.title("🧠 BAAMT")
-st.markdown(
-"""
-A rapid behavioural assessment tool that helps advocacy teams
-identify audience readiness and design effective messaging strategies.
-"""
-)
-
 st.markdown("---")
 
 
