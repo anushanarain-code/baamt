@@ -176,7 +176,22 @@ strategy_texts = {
         "Moral Interpretation": "Focus on moral boundaries and preventing contamination."
     }
 }
-st.progress(score / 10)
+st.subheader("Moral Foundation Scores")
+
+st.write("Care / Harm")
+st.progress(care_score / 5)
+
+st.write("Fairness")
+st.progress(fairness_score / 5)
+
+st.write("Authority")
+st.progress(authority_score / 5)
+
+st.write("Loyalty")
+st.progress(loyalty_score / 5)
+
+st.write("Purity")
+st.progress(purity_score / 5)
 
 # -----------------------------
 # Show Results
