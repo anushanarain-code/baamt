@@ -169,11 +169,11 @@ results_for_pdf = {
     "Moral Interpretation": strategy["Moral Interpretation"],
 }
 
-#pdf_file = generate_pdf(results_for_pdf)
+# pdf_file = generate_pdf(results_for_pdf)
 
 #st.download_button(
-    label="Download PDF Report",
-    data=open(pdf_file, "rb"),
-    file_name="BAAMT_Report.pdf",
-    mime="application/pdf"
-)
+#    label="Download PDF Report",
+#    data=open(pdf_file, "rb"),
+#    file_name="BAAMT_Report.pdf",
+#    mime="application/pdf"
+# )
