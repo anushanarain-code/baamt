@@ -1,3 +1,21 @@
+st.set_page_config(
+    page_title="BAAMT",
+    page_icon="🧠",
+    layout="wide"
+)
+st.title("🧠 BAAMT")
+st.subheader("Behavioural Advocacy and Messaging Tool")
+
+st.markdown(
+"""
+A rapid behavioural assessment tool that helps advocacy teams
+identify audience readiness and design effective messaging strategies.
+"""
+)
+
+st.markdown("---")
+
+
 import streamlit as st
 
 st.set_page_config(
@@ -60,6 +78,12 @@ campaign_type = st.selectbox("Select Campaign Type", ["Awareness", "Corporate co
 
 # -----------------------------
 # Moral Questionnaire
+col1, col2 = st.columns([1,1])
+
+with col1:
+    st.header("Audience Assessment")
+
+    # your questions go here
 # -----------------------------
 st.subheader("Moral Questionnaire")
 questions = [
@@ -78,7 +102,10 @@ questions = [
 responses = []
 for q in questions:
     responses.append(st.slider(q, 1, 5, 3))
+with col2:
+    st.header("Behavioural Profile")
 
+    # scoring results here
 # -----------------------------
 # Moral Foundation Calculation
 # -----------------------------
@@ -138,6 +165,7 @@ strategy_texts = {
         "Moral Interpretation": "Focus on moral boundaries and preventing contamination."
     }
 }
+st.progress(score / 10)
 
 # -----------------------------
 # Show Results
