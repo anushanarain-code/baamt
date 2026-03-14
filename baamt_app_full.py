@@ -4,8 +4,6 @@ import matplotlib.pyplot as plt
 from fpdf import FPDF
 
 st.title("🧠 BAAMT")
-st.subheader("Behavioural Advocacy and Messaging Tool")
-
 st.markdown(
 """
 A rapid behavioural assessment tool that helps advocacy teams
