@@ -3,11 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from fpdf import FPDF
 
-st.set_page_config(
-    page_title="BAAMT",
-    page_icon="🧠",
-    layout="wide"
-)
+
 st.title("🧠 BAAMT")
 st.subheader("Behavioural Advocacy and Messaging Tool")
 
