@@ -3,7 +3,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from fpdf import FPDF
 
-
 st.title("🧠 BAAMT")
 st.subheader("Behavioural Advocacy and Messaging Tool")
 
