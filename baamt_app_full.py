@@ -46,7 +46,7 @@ guidance and campaign strategy recommendations.
 
 st.markdown("---")
 
-# NEW INSTRUCTION TEXT
+# INSTRUCTIONS
 
 st.write("""
 ### How to Use This Tool
@@ -178,30 +178,25 @@ if st.button("Generate Advocacy Report"):
         segment="""
 This audience shows a strong compassion orientation. People in this group are
 particularly responsive to messages that highlight suffering, harm, and the
-ethical responsibility to protect vulnerable beings. Advocacy campaigns that
-emphasise empathy, moral responsibility, and the prevention of unnecessary
-suffering are therefore likely to resonate strongly with this audience.
+ethical responsibility to protect vulnerable beings.
 """
     elif authority>4:
         segment="""
-This audience places strong importance on institutions, governance, and social
-order. They tend to trust formal authorities and believe that social problems
-should be addressed through responsible regulation and policy leadership.
-Advocacy campaigns should therefore emphasise credible research, regulatory
-reform, and responsible institutional action.
+This audience places strong importance on institutions and governance.
+Advocacy campaigns should emphasise credible research, regulatory reform,
+and responsible institutional action.
 """
     elif loyalty>4:
         segment="""
-This audience is strongly influenced by community identity and social belonging.
-Advocacy messaging should therefore emphasise collective responsibility,
-community leadership, and the importance of protecting shared values.
+This audience is strongly influenced by community identity and shared values.
+Advocacy messaging should emphasise collective responsibility and community
+leadership.
 """
     else:
         segment="""
-This audience shows a relatively balanced moral profile without a single
-dominant moral value. Advocacy campaigns should combine compassion,
-fairness-based arguments, and institutional responsibility rather than relying
-on a single narrative frame.
+This audience shows a balanced moral profile without a single dominant value.
+Advocacy campaigns should combine compassion, fairness arguments,
+and institutional responsibility.
 """
 
     st.write(segment)
@@ -213,14 +208,12 @@ on a single narrative frame.
     if authority>3.5:
         reform="""
 This audience tends to trust institutions and may prefer reforms that occur
-through structured policy processes. Advocacy campaigns should emphasise
-practical reforms, regulatory standards, and responsible governance.
+through structured policy processes.
 """
     else:
         reform="""
-This audience may be more open to stronger critiques of existing systems and
-ambitious reforms. Messaging can therefore highlight systemic problems while
-still presenting realistic solutions.
+This audience may be more open to stronger critiques of existing systems
+and ambitious reforms.
 """
 
     st.write(reform)
@@ -230,17 +223,9 @@ still presenting realistic solutions.
     st.header("5️⃣ Risk Sensitivity Profile")
 
     if purity>4:
-        risk="""
-This audience shows relatively strong sensitivity to moral or cultural risk.
-Advocacy messaging should emphasise that reforms strengthen society rather
-than threaten social values.
-"""
+        risk="This audience shows strong sensitivity to moral or cultural risk."
     else:
-        risk="""
-This audience does not appear extremely sensitive to moral risks associated
-with change. Campaigns can therefore focus more directly on evidence,
-problem-solving, and ethical progress.
-"""
+        risk="This audience shows relatively low sensitivity to moral risk."
 
     st.write(risk)
 
@@ -255,7 +240,7 @@ problem-solving, and ethical progress.
 
     st.write(trust)
 
-    # Advocacy Lever
+    # Lever
 
     st.header("7️⃣ Primary Advocacy Lever")
 
@@ -288,11 +273,8 @@ problem-solving, and ethical progress.
     st.header("9️⃣ Campaign Strategy Plan")
 
     strategy="""
-An effective advocacy campaign targeting this audience should combine public
-education, credible research evidence, and engagement with institutional
-stakeholders. Campaign messaging should clearly explain the problem and
-present practical solutions that can realistically be implemented through
-policy reform, market shifts, or behavioural change.
+An effective advocacy campaign should combine public education, credible
+research evidence, and engagement with institutional stakeholders.
 """
 
     st.write(strategy)
@@ -307,14 +289,17 @@ Geography: {geography}
 Stakeholder: {stakeholder}
 Campaign Objective: {campaign}
 
-The behavioural analysis suggests that this audience can be effectively engaged
-through {lever.lower()} combined with clear evidence and realistic policy
-solutions.
+The behavioural analysis suggests this audience can be engaged through
+{lever.lower()} combined with clear evidence and practical solutions.
 """
 
     st.write(brief)
 
-    # PDF GENERATION (FIXED)
+    # SUCCESS MESSAGE (UX IMPROVEMENT)
+
+    st.success("Your advocacy report has been generated successfully. You can now download the full report below.")
+
+    # PDF GENERATION
 
     report=f"""
 BAAMT Advocacy Strategy Report
@@ -361,7 +346,7 @@ Advocacy Strategy Brief
     for line in textwrap.wrap(report,90):
         pdf.cell(0,8,line,ln=True)
 
-    pdf_bytes = pdf.output(dest="S")
+    pdf_bytes = bytes(pdf.output(dest="S"))
 
     st.download_button(
         label="Download BAAMT Report (PDF)",
