@@ -4,7 +4,7 @@ import pandas as pd
 st.set_page_config(page_title="BAAMT", layout="wide")
 
 # ---------------------------------------------------
-# INTRODUCTION (RESTORED)
+# INTRODUCTION
 # ---------------------------------------------------
 
 st.title("BAAMT – Behavioural Advocacy and Messaging Tool")
@@ -191,86 +191,91 @@ foundation for this audience appears to be **{dominant}**.
 Moral foundations shape intuitive judgments about ethical and political
 issues. When advocacy messages resonate with the dominant moral
 priorities of an audience, those messages are often perceived as more
-credible and emotionally compelling. Conversely, arguments that conflict
-with these intuitive moral expectations may encounter resistance even
-when supported by strong empirical evidence.
-
-Understanding the moral profile of an audience therefore helps advocacy
-organisations frame their arguments in ways that connect more directly
-with audience values.
+credible and emotionally compelling.
 """
 
 reform_orientation = """
-The distribution of responses suggests that the audience may prefer
-policy proposals that are framed as pragmatic improvements rather
-than radical systemic change. Campaigns may therefore benefit from
-presenting reforms as practical steps that strengthen existing
-institutions while addressing identifiable problems.
-
-Positioning reforms as responsible adjustments rather than disruptive
-transformations can help reduce perceived risk and increase political
-acceptability.
+The response pattern suggests that the audience may be more receptive
+to policy proposals framed as pragmatic improvements rather than
+disruptive systemic change.
 """
 
 risk_profile = f"""
-Several potential strategic risks emerge from this behavioural profile.
-
-First, messaging that contradicts the dominant moral foundation
-(**{dominant}**) may appear ideologically misaligned with audience
-values. Second, advocacy campaigns operating in the **{geography}**
-environment must remain sensitive to existing policy debates and
-institutional norms.
-
-Finally, campaigns that overlook the influence of **{stakeholder}**
-actors may struggle to gain traction within the networks through
-which political ideas and narratives typically spread.
+Messaging that contradicts the dominant moral foundation (**{dominant}**)
+may appear ideologically misaligned with audience values.
 """
 
 campaign_strategy = f"""
-An effective campaign strategy should integrate moral framing with
-the broader advocacy environment identified in the contextual analysis.
-
-Because **{dominant}** appears to be the dominant moral foundation,
-campaign narratives should emphasise themes aligned with this value
-system. At the same time, these narratives must be adapted to the
-communication style of the **{audience}** audience and the institutional
-dynamics of the **{geography}** environment.
-
-Stakeholder engagement with **{stakeholder}** actors may also be
-important for amplifying the campaign's influence. Strategic alliances,
-public endorsements, or institutional engagement can help translate
-moral narratives into broader public legitimacy.
+Because **{dominant}** is the dominant moral foundation, campaign
+narratives should emphasise themes aligned with this value system.
 """
 
 messaging_strategy = f"""
-The messaging strategy should combine moral resonance with contextual
-credibility. Messages that appeal to **{dominant}** values are more
-likely to feel intuitively compelling to the target audience.
-
-However, these narratives should also acknowledge the policy
-environment in **{geography}**, the expectations of **{audience}**
-audiences, and the influence of **{stakeholder}** actors.
-
-By integrating moral framing with contextual awareness, advocacy
-organisations can produce messages that are both ethically persuasive
-and strategically realistic.
+Messaging should align moral resonance with the expectations of
+**{audience}** audiences within the **{geography}** policy context.
 """
 
+# ---------------------------------------------------
+# EXPANDED EXAMPLE MESSAGES
+# ---------------------------------------------------
+
 example_messages = {
-"Care":"Policy decisions ultimately affect the wellbeing of real people...",
-"Fairness":"A fair society depends on systems that distribute responsibilities equitably...",
-"Authority":"Strong institutions require clear standards and responsible oversight...",
-"Loyalty":"Communities thrive when people work together to protect shared values...",
-"Purity":"Societies are judged by the ethical standards they uphold..."
+
+"Care":
+"""
+Every policy decision ultimately affects the wellbeing of real people and
+communities. When systems fail to reduce preventable harm or suffering,
+the consequences are often borne by those who are already vulnerable.
+Advocacy efforts that prioritise compassion and protection can therefore
+play a crucial role in building policies that reflect shared social
+responsibility and care for others.
+""",
+
+"Fairness":
+"""
+A stable and legitimate society depends on systems that distribute
+responsibilities and benefits fairly. When institutions allow harms
+or costs to be shifted onto others without accountability, public
+trust weakens and inequalities deepen. Strengthening policies that
+promote fairness and transparency can help ensure that institutions
+operate responsibly and serve the interests of society as a whole.
+""",
+
+"Authority":
+"""
+Strong and credible institutions are essential for maintaining public
+trust and social stability. Clear standards, effective oversight,
+and responsible governance help ensure that institutions function as
+intended and protect the public interest. Strengthening institutional
+accountability can therefore reinforce confidence in regulatory systems
+and the policies that guide them.
+""",
+
+"Loyalty":
+"""
+Communities thrive when individuals recognise a shared responsibility
+to protect collective wellbeing. Policies that strengthen cooperation
+and reinforce shared values can help ensure that communities remain
+resilient in the face of social and economic challenges. Working
+together to support responsible reforms can therefore help build
+stronger and more cohesive societies.
+""",
+
+"Purity":
+"""
+Societies are often judged by the ethical standards they uphold.
+When institutions or industries operate without clear moral
+accountability, public trust and social legitimacy can deteriorate.
+Ensuring that policies promote integrity, responsibility, and ethical
+conduct helps maintain the moral foundations on which stable and
+trustworthy institutions depend.
+"""
 }
 
 final_summary = f"""
 Overall, the analysis suggests that advocacy strategies for this
 campaign should align moral narratives, audience expectations,
-and institutional realities. By integrating the moral foundation
-profile with the broader campaign context, organisations can design
-advocacy messages that resonate with audience values while also
-remaining credible within the relevant political environment.
+and institutional realities.
 """
 
 # ---------------------------------------------------
@@ -302,3 +307,38 @@ if st.button("Generate Report"):
 
     st.header("Integrated Strategic Summary")
     st.write(final_summary)
+
+    report = f"""
+BAAMT Advocacy Analysis
+
+Audience Context Analysis
+{context_analysis}
+
+Moral Foundations Analysis
+{foundation_analysis}
+
+Reform Orientation
+{reform_orientation}
+
+Risk Profile
+{risk_profile}
+
+Campaign Strategy
+{campaign_strategy}
+
+Messaging Strategy
+{messaging_strategy}
+
+Example Advocacy Message
+{example_messages[dominant]}
+
+Integrated Strategic Summary
+{final_summary}
+"""
+
+    st.download_button(
+        "Download Full Report",
+        report,
+        file_name="BAAMT_advocacy_analysis.txt",
+        mime="text/plain"
+    )
