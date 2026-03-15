@@ -1,36 +1,35 @@
 import streamlit as st
-import matplotlib.pyplot as plt
-import numpy as np
 
 st.set_page_config(page_title="BAAMT", layout="wide")
 
 st.title("BAAMT – Behavioural Advocacy and Messaging Tool")
 
 st.write(
-"BAAMT helps advocacy organizations design messaging strategies based on "
-"the moral values, trust orientation, and risk sensitivities of their target audiences."
+"BAAMT is a behavioural analysis tool designed to help advocacy organizations, "
+"policy researchers, and social campaigners better understand how different audiences "
+"may respond to advocacy messaging. The tool draws on behavioural science and moral "
+"psychology to generate strategic insights about advocacy communication."
 )
 
-# -------------------------
-# Audience Instructions
-# -------------------------
+# ---------------------------------------------------
+# Audience Context
+# ---------------------------------------------------
 
 st.markdown("""
 ### Audience Context
 
-Please select the audience context for which you are designing an advocacy or policy campaign.
+Select the campaign environment in which you are working.  
+These variables help contextualize the behavioural analysis produced by BAAMT.
 
-• Audience Type identifies the group you want to influence  
-• Geography reflects the policy and cultural environment  
-• Stakeholder Type identifies actors central to the campaign  
-• Campaign Type clarifies the advocacy objective  
+• **Audience Type** – the primary group you want to influence  
+• **Geography** – the regulatory and cultural environment  
+• **Stakeholder Type** – actors who influence the issue landscape  
+• **Campaign Type** – the type of advocacy intervention
 """)
 
-# -------------------------
-# Audience Inputs
-# -------------------------
-
-st.header("Audience Information")
+# ---------------------------------------------------
+# Inputs
+# ---------------------------------------------------
 
 audience = st.selectbox(
 "Audience Type",
@@ -52,95 +51,94 @@ campaign = st.selectbox(
 ["Behaviour Change","Policy Advocacy","Awareness Campaign"]
 )
 
-# -------------------------
-# Explanations
-# -------------------------
+# ---------------------------------------------------
+# Descriptions
+# ---------------------------------------------------
 
 audience_explanations = {
 
 "General Public":
-"When the general public is the primary audience, advocacy messages should prioritize clarity and relatable examples.",
+"The general public represents a broad and diverse audience whose attitudes, consumption choices, and voting behaviour collectively influence market dynamics and political priorities. Advocacy campaigns targeting the general public often benefit from accessible messaging, emotional resonance, and clear explanations of the societal consequences of everyday behaviours.",
 
 "Policy Makers":
-"Policy makers respond best to evidence-based arguments, regulatory feasibility, and policy comparisons.",
+"Policy makers represent institutional decision-makers who have the authority to shape regulatory frameworks and legislative outcomes. Advocacy efforts directed at this audience tend to be most effective when grounded in credible evidence, policy feasibility, and comparative examples from other jurisdictions.",
 
 "Professionals":
-"Professional audiences respond strongly to credible research, technical evidence, and best practices.",
+"Professional audiences include scientists, industry actors, regulators, and subject-matter experts whose opinions can influence both public discourse and policy development. Messaging directed toward professional audiences often requires technical credibility, careful use of evidence, and alignment with professional norms.",
 
 "Youth":
-"Youth audiences often respond strongly to future-oriented messaging and values-driven narratives."
+"Younger audiences often demonstrate strong engagement with ethical and future-oriented narratives. Advocacy messaging aimed at youth audiences frequently benefits from emphasizing long-term societal impacts, generational responsibility, and collective social change."
 }
 
 geography_explanations = {
 
 "India":
-"In India, advocacy messaging often resonates when framed around social welfare, development, and community wellbeing.",
+"Advocacy efforts in India operate within a complex federal system characterized by diverse cultural contexts, rapidly evolving regulatory frameworks, and strong interactions between public opinion and political institutions.",
 
 "Global":
-"Global campaigns often resonate when framed around universal ethical values and global cooperation.",
+"Global advocacy campaigns often involve transnational institutions, multinational corporations, and international civil society networks.",
 
 "Europe":
-"In Europe, sustainability and environmental responsibility often strengthen advocacy messaging.",
+"European policy environments often emphasize sustainability, regulatory accountability, and precautionary approaches to technological and environmental risk.",
 
 "USA":
-"In the United States, advocacy messaging often gains traction when framed around innovation and consumer choice."
+"The United States advocacy environment often combines strong market dynamics with polarized political debate."
 }
 
 stakeholder_explanations = {
 
 "General Public":
-"The broader population whose attitudes influence democratic legitimacy and market demand.",
+"The broader population whose attitudes and behavioural choices influence both democratic legitimacy and economic demand.",
 
 "Community Leaders":
-"Community leaders can serve as influential intermediaries in shaping social attitudes.",
+"Community leaders, educators, activists, and public figures can act as influential intermediaries who shape public narratives and help translate complex issues for local audiences.",
 
 "Organizations":
-"Organizations can influence policy, institutional practice, and industry standards."
+"Organizations such as NGOs, corporations, professional associations, and advocacy groups can influence institutional practices, regulatory debates, and industry standards."
 }
 
 campaign_explanations = {
 
 "Behaviour Change":
-"Behaviour change campaigns aim to shift everyday choices and habits through persuasive messaging.",
+"Behaviour change campaigns attempt to influence everyday decisions such as consumption choices, lifestyle habits, or social behaviours.",
 
 "Policy Advocacy":
-"Policy advocacy campaigns focus on influencing laws, regulations, and institutional decisions.",
+"Policy advocacy campaigns aim to influence legislation, regulatory frameworks, or institutional decisions.",
 
 "Awareness Campaign":
-"Awareness campaigns seek to increase public understanding and issue visibility."
+"Awareness campaigns aim to increase visibility and public understanding of an issue."
 }
 
-# -------------------------
+# ---------------------------------------------------
 # Theoretical Framework
-# -------------------------
+# ---------------------------------------------------
 
 st.header("Theoretical Framework")
 
-framework = (
-"BAAMT draws on Moral Foundations Theory, which proposes that human moral reasoning "
-"is shaped by several intuitive ethical dimensions including care, fairness, loyalty, "
-"authority, and purity. Understanding which moral foundations dominate within an "
-"audience can help advocates design messages that resonate with existing moral intuitions."
+st.write(
+"BAAMT draws on insights from Moral Foundations Theory, behavioural economics, and advocacy strategy research. "
+"Moral Foundations Theory suggests that individuals interpret political and ethical issues through intuitive "
+"moral lenses such as care, fairness, loyalty, authority, and purity. Advocacy campaigns that align their "
+"messaging with these underlying moral intuitions are often more persuasive than campaigns that rely solely "
+"on factual or technical arguments."
 )
 
-st.write(framework)
-
-# -------------------------
+# ---------------------------------------------------
 # Questionnaire
-# -------------------------
+# ---------------------------------------------------
 
 st.markdown("""
 ### Behavioural Questionnaire
 
-Rate each statement from **1 (Strongly Disagree)** to **5 (Strongly Agree)**.
+Rate the following statements from **1 (Strongly Disagree)** to **5 (Strongly Agree)**.
 """)
 
 questions = {
-"Care":"Preventing suffering should be a top priority in public policy.",
-"Fairness":"Fair treatment matters even if it requires economic trade-offs.",
-"Authority":"Society functions best when people respect authority.",
-"Loyalty":"Loyalty to one's community should guide decision-making.",
-"Purity":"Purity and moral cleanliness are important social values."
+"Care":"Reducing suffering should be a major priority when making public decisions.",
+"Fairness":"Justice and fairness should guide policy even when they involve economic trade-offs.",
+"Authority":"Societies function best when institutions and leadership structures are respected.",
+"Loyalty":"Protecting one's community and social group is an important moral obligation.",
+"Purity":"Moral integrity and ethical purity are important principles for guiding social behaviour."
 }
 
 scores = {}
@@ -148,93 +146,68 @@ scores = {}
 for key,q in questions.items():
     scores[key] = st.slider(q,1,5,3)
 
-# -------------------------
-# Radar Chart
-# -------------------------
-
-labels=list(scores.keys())
-values=list(scores.values())
-values+=values[:1]
-
-angles=np.linspace(0,2*np.pi,len(labels),endpoint=False)
-angles=np.concatenate((angles,[angles[0]]))
-
-fig,ax=plt.subplots(figsize=(5,5),subplot_kw=dict(polar=True))
-ax.plot(angles,values)
-ax.fill(angles,values,alpha=0.2)
-ax.set_xticks(angles[:-1])
-ax.set_xticklabels(labels)
-
-st.pyplot(fig)
-
-# -------------------------
-# Moral Foundations Analysis
-# -------------------------
+# ---------------------------------------------------
+# Moral Analysis
+# ---------------------------------------------------
 
 dominant = max(scores, key=scores.get)
 
 foundation_analysis = {
+
 "Care":
-"This audience places strong emphasis on harm reduction and compassion. Advocacy messages highlighting suffering reduction and protection of vulnerable groups are likely to resonate strongly.",
+"This audience appears strongly motivated by concerns related to harm reduction and compassion. Advocacy messages that highlight the protection of vulnerable populations, the prevention of suffering, and the ethical responsibility to reduce harm are likely to resonate particularly strongly.",
 
 "Fairness":
-"This audience appears strongly motivated by fairness and justice concerns. Messages emphasizing equality and ethical responsibility are likely to resonate.",
+"This audience appears highly responsive to questions of justice, fairness, and equitable treatment.",
 
 "Authority":
-"This audience places importance on order, leadership, and institutional stability. Messages emphasizing responsibility and structured solutions may be effective.",
+"This audience appears to place substantial weight on institutional stability, social order, and legitimate authority.",
 
 "Loyalty":
-"This audience appears strongly motivated by group loyalty and social cohesion. Messaging that highlights community identity may resonate.",
+"This audience appears strongly motivated by values related to group identity and social solidarity.",
 
 "Purity":
-"This audience demonstrates sensitivity to moral and symbolic purity concerns. Messaging that highlights ethical integrity may resonate."
+"This audience appears sensitive to symbolic concerns about ethical integrity and moral boundaries."
 }
 
-# -------------------------
-# Dynamic Behavioural Segment
-# -------------------------
+# ---------------------------------------------------
+# Strategic Profiles
+# ---------------------------------------------------
 
-care = scores["Care"]
-fairness = scores["Fairness"]
-authority = scores["Authority"]
-loyalty = scores["Loyalty"]
+avg_score = sum(scores.values())/len(scores)
 
-if care + fairness >= 8:
-
-    segment = (
-    "This audience appears strongly motivated by compassion and fairness concerns."
-    )
-
-elif authority + loyalty >= 8:
-
-    segment = (
-    "This audience appears more responsive to tradition and social stability."
-    )
-
+if avg_score >= 4:
+    reform_orientation = "Reform-oriented audiences may be relatively open to ambitious policy change."
 else:
+    reform_orientation = "Incremental reform strategies may be more effective for this audience."
 
-    segment = (
-    "This audience demonstrates a balanced moral profile."
-    )
+if scores["Authority"] >=4:
+    risk_profile = "This audience appears relatively risk-averse and may prefer policy stability."
+else:
+    risk_profile = "This audience may be more open to experimentation and innovation."
 
-# -------------------------
+campaign_strategy = (
+"Advocacy campaigns targeting this audience should combine clear ethical framing "
+"with credible evidence and narratives that connect the issue to everyday experiences."
+)
+
+advocacy_lever = (
+"Potential advocacy levers may include coalition-building with credible institutions, "
+"strategic media engagement, and framing the issue in ways that align with existing "
+"moral intuitions."
+)
+
+# ---------------------------------------------------
 # Generate Report
-# -------------------------
+# ---------------------------------------------------
 
 if st.button("Generate Report"):
 
-    st.header("Audience Profile")
+    st.header("Audience Context")
 
-    st.write("Audience:", audience)
     st.write(audience_explanations[audience])
-
-    st.write("Geography:", geography)
     st.write(geography_explanations[geography])
-
-    st.write("Stakeholder:", stakeholder)
     st.write(stakeholder_explanations[stakeholder])
-
-    st.write("Campaign Type:", campaign)
     st.write(campaign_explanations[campaign])
 
     st.header("Moral Foundations Profile")
@@ -244,37 +217,49 @@ if st.button("Generate Report"):
 
     st.write(foundation_analysis[dominant])
 
-    st.header("Behavioural Segment")
+    st.header("Reform Orientation")
+    st.write(reform_orientation)
 
-    st.write(segment)
+    st.header("Risk Profile")
+    st.write(risk_profile)
+
+    st.header("Campaign Strategy")
+    st.write(campaign_strategy)
+
+    st.header("Advocacy Lever")
+    st.write(advocacy_lever)
 
     st.header("Full Report Summary")
 
-    st.write(
-    "This BAAMT assessment suggests that advocacy strategies should align messaging "
-    "with the dominant moral intuitions of the audience while highlighting practical benefits."
-    )
-
-    report = f"""
-BAAMT Advocacy Report
+    summary = f"""
+BAAMT Advocacy Analysis
 
 Audience: {audience}
 Geography: {geography}
 Stakeholder: {stakeholder}
-Campaign: {campaign}
+Campaign Type: {campaign}
 
 Dominant Moral Foundation: {dominant}
 
-Interpretation:
+Strategic Implication:
 {foundation_analysis[dominant]}
 
-Behavioural Segment:
-{segment}
+Reform Orientation:
+{reform_orientation}
+
+Risk Profile:
+{risk_profile}
+
+Campaign Strategy:
+{campaign_strategy}
+
+Advocacy Lever:
+{advocacy_lever}
 """
 
     st.download_button(
         label="Download Report",
-        data=report,
+        data=summary,
         file_name="baamt_report.txt",
         mime="text/plain"
     )
