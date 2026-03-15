@@ -18,15 +18,14 @@ st.write(
 st.markdown("""
 ### Audience Context
 
-Please select the audience context for which you are designing an advocacy or policy campaign.  
-These selections help contextualize the messaging strategy produced by the tool.
+Please select the audience context for which you are designing an advocacy or policy campaign.
 
-• **Audience Type** identifies the primary group you are trying to influence.  
-• **Geography** reflects the policy and cultural environment within which advocacy will occur.  
-• **Stakeholder Type** indicates the social actors who are most relevant to the campaign.  
-• **Campaign Type** clarifies whether the objective is behavioural change, policy reform, or awareness.
+• **Audience Type** identifies the group you want to influence  
+• **Geography** reflects the policy and cultural environment  
+• **Stakeholder Type** identifies actors central to the campaign  
+• **Campaign Type** clarifies the advocacy objective  
 
-These inputs help ensure that the final advocacy strategy is grounded in the realities of the target context.
+These inputs help contextualize the messaging recommendations produced by BAAMT.
 """)
 
 # -------------------------
@@ -56,33 +55,61 @@ campaign = st.selectbox(
 )
 
 # -------------------------
-# Explanations
+# Strategic Explanations
 # -------------------------
 
 audience_explanations = {
-"General Public":"The general public includes citizens and consumers whose everyday choices, purchasing behaviour, and social attitudes collectively shape market demand and political priorities.",
-"Policy Makers":"Policy makers include legislators, regulators, and government officials who design and implement laws, regulations, and public policy frameworks.",
-"Professionals":"Professionals include experts, industry practitioners, researchers, and specialists whose institutional decisions influence organizational practices.",
-"Youth":"Youth audiences are often early adopters of new social values and cultural norms, making them influential in shaping long-term behavioural trends."
+
+"General Public":
+"When the general public is the primary audience, advocacy messages should prioritize clarity, emotional resonance, and relatable everyday examples. Campaigns are often most effective when they highlight tangible benefits, social norms, and visible impacts on daily life.",
+
+"Policy Makers":
+"When policy makers are the target audience, messaging should emphasize regulatory feasibility, institutional benefits, and credible evidence. Policy briefs, economic implications, and examples of successful regulatory models are particularly persuasive.",
+
+"Professionals":
+"Professional audiences respond strongly to evidence-based messaging and technical credibility. Campaigns should emphasize best practices, research findings, and professional standards.",
+
+"Youth":
+"Youth audiences often respond strongly to future-oriented messaging and values-driven narratives. Campaigns that emphasize long-term social impact and opportunities for participation can create stronger engagement."
 }
 
 geography_explanations = {
-"India":"Advocacy in India often operates within a complex federal governance structure, diverse cultural contexts, and rapidly evolving regulatory frameworks.",
-"Global":"Global campaigns must resonate across different cultures and legal systems, often emphasizing universal ethical principles.",
-"Europe":"European advocacy environments often emphasize precautionary regulation, environmental protection, and institutional governance frameworks.",
-"USA":"Messaging in the United States often resonates when framed around innovation, economic incentives, and individual choice."
+
+"India":
+"In India, advocacy messaging often benefits from emphasizing public welfare, development outcomes, and community wellbeing.",
+
+"Global":
+"Global campaigns should emphasize universal ethical values and shared global challenges.",
+
+"Europe":
+"In Europe, advocacy messages often resonate when framed around sustainability and regulatory responsibility.",
+
+"USA":
+"In the United States, advocacy campaigns often gain traction when framed around innovation, market solutions, and consumer choice."
 }
 
 stakeholder_explanations = {
-"General Public":"The broader population whose attitudes influence democratic legitimacy and market demand.",
-"Community Leaders":"Influential actors such as educators, local organizers, religious leaders, and public intellectuals.",
-"Organizations":"Formal institutions such as companies, NGOs, advocacy groups, and government bodies."
+
+"General Public":
+"When the broader public is a key stakeholder group, campaigns should prioritize awareness initiatives, storytelling, and social norm messaging.",
+
+"Community Leaders":
+"Community leaders can act as influential intermediaries between campaigns and local populations.",
+
+"Organizations":
+"When organizations are central stakeholders, advocacy should emphasize institutional incentives and practical implementation pathways."
 }
 
 campaign_explanations = {
-"Behaviour Change":"Campaigns aimed at shifting everyday behaviours, habits, or consumer choices.",
-"Policy Advocacy":"Campaigns designed to influence legislation, regulation, or institutional decision-making.",
-"Awareness Campaign":"Initiatives focused on raising public understanding and visibility of an issue."
+
+"Behaviour Change":
+"Behaviour change campaigns work best when they combine awareness with clear and actionable steps that audiences can easily adopt.",
+
+"Policy Advocacy":
+"Policy advocacy campaigns should focus on evidence, coalition building, and demonstrating the feasibility of policy reform.",
+
+"Awareness Campaign":
+"Awareness campaigns aim to increase visibility and understanding of an issue through compelling narratives and accessible information."
 }
 
 # -------------------------
@@ -92,13 +119,11 @@ campaign_explanations = {
 st.header("Theoretical Framework")
 
 framework = (
-"BAAMT draws on Moral Foundations Theory, a framework in moral psychology which "
-"suggests that human ethical reasoning is shaped by several intuitive moral dimensions. "
-"These include care and harm, fairness and justice, loyalty and group belonging, "
-"respect for authority, and concerns related to purity and moral integrity. "
-"Different audiences emphasize these foundations to varying degrees. "
-"By identifying which moral intuitions are most salient for a particular audience, "
-"advocates can design messages that resonate more strongly with existing values."
+"BAAMT draws on Moral Foundations Theory, which suggests that human moral reasoning "
+"is influenced by several intuitive ethical dimensions including care, fairness, loyalty, "
+"authority, and purity. Different audiences prioritize these values differently. "
+"Understanding these patterns can help advocates design messages that resonate with "
+"existing moral intuitions rather than relying solely on abstract arguments."
 )
 
 st.write(framework)
@@ -110,14 +135,15 @@ st.write(framework)
 st.markdown("""
 ### Behavioural Questionnaire
 
-Please rate the following statements using the sliders below.  
-Your responses help estimate which moral foundations are most influential for the selected audience.
+Please rate the following statements.
 
 Scores range from **1 (Strongly Disagree)** to **5 (Strongly Agree)**.
+
+These responses help estimate which moral foundations are most influential for the selected audience.
 """)
 
 # -------------------------
-# Behavioural Questions
+# Questions
 # -------------------------
 
 questions = {
@@ -153,13 +179,37 @@ ax.set_xticklabels(labels)
 st.pyplot(fig)
 
 # -------------------------
-# Interpretation
+# Dynamic Behavioural Segmentation
 # -------------------------
 
-segment = (
-"This audience demonstrates a mixed moral profile. Messaging strategies should therefore "
-"integrate multiple ethical frames and emphasize both compassion and fairness."
-)
+care = scores["Care"]
+fairness = scores["Fairness"]
+authority = scores["Authority"]
+loyalty = scores["Loyalty"]
+purity = scores["Purity"]
+
+if care + fairness >= 8:
+
+    segment = (
+    "This audience appears strongly motivated by compassion and fairness concerns. "
+    "Advocacy messages that highlight the prevention of suffering, protection of "
+    "vulnerable groups, and equitable outcomes are likely to resonate most strongly."
+    )
+
+elif authority + loyalty >= 8:
+
+    segment = (
+    "This audience appears more responsive to social stability and community cohesion. "
+    "Advocacy messages should emphasize responsibility, tradition, and the protection "
+    "of shared social values."
+    )
+
+else:
+
+    segment = (
+    "This audience demonstrates a balanced moral profile. Messaging strategies should "
+    "integrate multiple frames combining ethical reasoning with practical real-world benefits."
+    )
 
 risk = (
 "This audience demonstrates moderate sensitivity to social risk. Messages should emphasize "
@@ -167,13 +217,13 @@ risk = (
 )
 
 trust = (
-"Institutional trust is variable for this audience. Advocacy messages should therefore "
-"emphasize transparency, evidence, and successful precedents."
+"Institutional trust appears variable for this audience. Advocacy messages should emphasize "
+"credibility, transparency, and evidence-based reasoning."
 )
 
 strategy = (
-"Effective campaigns should combine storytelling, credible evidence, and culturally "
-"relevant examples to create persuasive narratives."
+"Effective campaigns should combine storytelling, credible evidence, and culturally relevant "
+"examples to create persuasive narratives."
 )
 
 # -------------------------
@@ -208,40 +258,35 @@ if st.button("Generate Report"):
     st.subheader("Advocacy Strategy")
     st.write(strategy)
 
-    # -------------------------
-    # Full Report Summary
-    # -------------------------
-
     st.header("Full Report Summary")
 
     st.write(
-    "The BAAMT assessment suggests that advocacy strategies for this audience should "
-    "integrate moral appeals related to compassion, fairness, and practical outcomes. "
-    "Messages that highlight real-world benefits and credible evidence are likely to "
-    "generate stronger engagement."
+    "Based on the BAAMT assessment, advocacy strategies for this audience should combine "
+    "moral framing with clear real-world benefits. Messages that highlight fairness, "
+    "compassion, and practical societal improvements are likely to generate stronger engagement."
     )
-
-    # -------------------------
-    # Downloadable Report
-    # -------------------------
 
     report = f"""
 # BAAMT Advocacy Report
 
 ## Audience
 {audience}
+
 {audience_explanations[audience]}
 
 ## Geography
 {geography}
+
 {geography_explanations[geography]}
 
 ## Stakeholder
 {stakeholder}
+
 {stakeholder_explanations[stakeholder]}
 
 ## Campaign Type
 {campaign}
+
 {campaign_explanations[campaign]}
 
 ## Theoretical Framework
