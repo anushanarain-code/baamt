@@ -21,9 +21,20 @@ st.title("🧠 BAAMT")
 st.subheader("Behavioural Advocacy and Messaging Tool")
 
 st.markdown("""
-Advocacy campaigns often fail because they assume all audiences respond to the same moral arguments.
+BAAMT is a behavioural strategy tool designed to help advocacy organisations
+design more effective campaigns by aligning messaging with the **moral values,
+risk perceptions, and institutional expectations of their target audiences**.
 
-BAAMT helps advocacy organisations identify the **moral values most salient to a target audience**, and suggests **strategic messaging frames** based on behavioural science research.
+The framework draws on research from **Moral Foundations Theory**, behavioural
+public policy, and decision science. These approaches suggest that people do
+not respond to advocacy messages purely through facts or rational arguments,
+but through deeply held moral intuitions, social identities, and perceptions
+of risk and institutional legitimacy.
+
+By identifying the moral foundations most salient to a target audience, BAAMT
+generates a **behavioural profile and advocacy strategy brief** that can help
+campaigners design messages that resonate with the audiences they seek to
+influence.
 """)
 
 st.markdown("---")
@@ -72,13 +83,13 @@ st.markdown("---")
 
 st.header("Behavioural Assessment")
 
-st.markdown("Rate from **1 (Strongly Disagree)** to **5 (Strongly Agree)**.")
+st.markdown("Rate each statement from **1 (Strongly Disagree)** to **5 (Strongly Agree)**.")
 
 q1 = st.slider("Preventing suffering should be a top priority in public policy.",1,5)
 q2 = st.slider("Fair treatment matters even if it requires economic trade-offs.",1,5)
-q3 = st.slider("Society functions best when people respect authority.",1,5)
-q4 = st.slider("Loyalty to one's community should guide decisions.",1,5)
-q5 = st.slider("Purity and moral cleanliness are important values.",1,5)
+q3 = st.slider("Society functions best when people respect authority and institutions.",1,5)
+q4 = st.slider("Loyalty to one's community should guide important decisions.",1,5)
+q5 = st.slider("Purity and moral cleanliness are important social values.",1,5)
 
 q6 = st.slider("Avoiding harm to vulnerable beings is an ethical responsibility.",1,5)
 q7 = st.slider("Rules and laws should be followed even when inconvenient.",1,5)
@@ -87,7 +98,7 @@ q9 = st.slider("Communities should protect their traditions.",1,5)
 q10 = st.slider("Certain practices are morally wrong regardless of consequences.",1,5)
 
 # ---------------------------------------------------
-# SCORES
+# SCORE CALCULATION
 # ---------------------------------------------------
 
 care = (q1+q6)/2
@@ -96,17 +107,17 @@ authority = (q3+q7)/2
 loyalty = (q4+q9)/2
 purity = (q5+q10)/2
 
-# ---------------------------------------------------
-# GENERATE BUTTON
-# ---------------------------------------------------
+generate = st.button("Generate Advocacy Strategy")
 
-generate = st.button("Generate Behavioural Strategy")
+# ---------------------------------------------------
+# RESULTS
+# ---------------------------------------------------
 
 if generate:
 
     st.header("Audience Moral Profile")
 
-    st.write("Care/Harm:",round(care,2))
+    st.write("Care / Harm:",round(care,2))
     st.progress(care/5)
 
     st.write("Fairness:",round(fairness,2))
@@ -145,7 +156,7 @@ if generate:
     st.pyplot(fig)
 
 # ---------------------------------------------------
-# SEGMENTATION
+# BEHAVIOURAL SEGMENT
 # ---------------------------------------------------
 
     if care>4 and fairness>4:
@@ -166,141 +177,129 @@ if generate:
     st.subheader("Behavioural Segment")
     st.write(segment)
 
-    st.markdown("---")
-
 # ---------------------------------------------------
-# STRATEGY GENERATION
+# REFORM ORIENTATION
 # ---------------------------------------------------
 
-    st.header("Messaging Strategy")
-
-    dominant=max(care,fairness,authority,loyalty,purity)
-
-    strategy=""
-
-    if dominant==care:
-
-        strategy="""
-Focus messaging on **compassion and harm reduction**.
-
-Narratives that highlight the suffering of animals or vulnerable beings are likely to resonate strongly with this audience. Campaigns should use emotional storytelling, visual narratives, and moral appeals centered on empathy and protection.
-
-Example message:
-Millions of animals suffer in modern food systems every year. By supporting humane alternatives we can reduce immense suffering and create a kinder world.
+    if fairness+care > authority+loyalty:
+        reform_orientation="""
+This audience demonstrates a **reform-oriented moral profile**. Individuals
+with this profile are more receptive to arguments about systemic change,
+institutional reform, and correcting injustices within social systems.
+Advocacy efforts can therefore emphasize the possibility of improving
+existing institutions rather than simply preserving the status quo.
 """
-
-    elif dominant==fairness:
-
-        strategy="""
-Frame the issue as **justice and systemic fairness**.
-
-Campaign messaging should highlight inequalities, unfair subsidies, or structural injustices within food systems.
-
-Example message:
-Public resources should support ethical and sustainable food systems. Redirecting subsidies toward plant-based innovation can create a fairer future for people, animals, and the planet.
-"""
-
-    elif dominant==authority:
-
-        strategy="""
-Frame the issue around **institutional responsibility and governance**.
-
-Audiences with strong authority orientation respond to messages emphasizing regulation, oversight, and responsible leadership.
-
-Example message:
-Strong regulatory standards are essential to ensure responsible treatment of animals and protect public health.
-"""
-
-    elif dominant==loyalty:
-
-        strategy="""
-Appeal to **community identity and shared values**.
-
-Campaigns should emphasize protecting national traditions, communities, and future generations.
-
-Example message:
-Building sustainable food systems is part of protecting our communities and ensuring a healthy future for the next generation.
-"""
-
     else:
-
-        strategy="""
-Frame the issue around **moral integrity and purity**.
-
-Messaging should emphasize ethical consumption, natural living, and avoiding harmful practices.
-
-Example message:
-Choosing plant-based foods is a cleaner and more ethical way to live in harmony with nature.
+        reform_orientation="""
+This audience demonstrates a **stability-oriented moral profile**. Individuals
+with this orientation tend to prioritise social order, institutional legitimacy,
+and the preservation of traditions. Advocacy messages directed toward such
+audiences should therefore avoid framing change as disruptive, and instead
+emphasise continuity, responsible stewardship, and gradual improvement.
 """
 
-    st.write(strategy)
+    st.subheader("Reform Orientation")
+    st.write(reform_orientation)
 
 # ---------------------------------------------------
-# GEOGRAPHY ADJUSTMENT
+# RISK PROFILE
 # ---------------------------------------------------
 
-    if geography=="India":
+    if authority+purity > fairness+care:
+        risk_profile="""
+The behavioural profile suggests a **risk-sensitive audience**. Such audiences
+often respond strongly to perceived threats to social order, public health,
+or moral integrity. Advocacy messages that highlight the risks associated with
+current practices—such as environmental degradation, public health threats,
+or institutional failure—are likely to resonate.
+"""
+    else:
+        risk_profile="""
+The behavioural profile suggests an audience that is **less risk-averse and
+more opportunity oriented**. Messaging strategies can therefore emphasise
+innovation, positive change, and the potential benefits of reform rather than
+focusing primarily on risks or threats.
+"""
 
-        st.subheader("India-specific framing")
-
-        st.write("""
-Messaging in India can also highlight:
-
-• food system sustainability  
-• farmer transition opportunities  
-• public health and antibiotic resistance  
-• cultural traditions of plant-based diets
-""")
+    st.subheader("Risk Profile")
+    st.write(risk_profile)
 
 # ---------------------------------------------------
-# AUDIENCE ADJUSTMENT
+# ADVOCACY LEVER
 # ---------------------------------------------------
 
     if audience_type=="Policy Makers":
+        advocacy_lever="Regulatory reform and institutional accountability"
 
-        st.subheader("Policy Audience Strategy")
+    elif audience_type=="Corporate Stakeholders":
+        advocacy_lever="Market incentives and corporate leadership"
 
-        st.write("""
-Policy audiences respond best to:
+    else:
+        advocacy_lever="Public awareness and social norm change"
 
-• regulatory framing  
-• economic impact analysis  
-• public health arguments  
-• institutional accountability
-""")
+    st.subheader("Primary Advocacy Lever")
+    st.write(advocacy_lever)
 
-    if audience_type=="Corporate Stakeholders":
+# ---------------------------------------------------
+# CAMPAIGN STRATEGY PLAN
+# ---------------------------------------------------
 
-        st.subheader("Corporate Engagement Strategy")
+    strategy_plan=f"""
+A campaign directed toward **{audience_type}** audiences in **{geography}**
+should combine moral framing with institutional credibility.
 
-        st.write("""
-Corporate messaging should emphasize:
+The campaign should prioritise the advocacy lever of **{advocacy_lever}**
+while ensuring that communication strategies reflect the dominant
+moral concerns identified in the behavioural assessment.
 
-• market opportunities  
-• innovation leadership  
-• ESG and sustainability commitments  
-• reputational benefits
-""")
+Campaign messaging should therefore balance **evidence-based policy
+arguments with narratives that resonate emotionally and morally**
+with the audience being targeted.
+"""
+
+    st.subheader("Campaign Strategy Plan")
+    st.write(strategy_plan)
+
+# ---------------------------------------------------
+# ADVOCACY STRATEGY
+# ---------------------------------------------------
+
+    strategy=f"""
+Based on the behavioural assessment, the recommended advocacy strategy
+is to design messaging that aligns with the audience's dominant moral
+foundations while maintaining credibility within the institutional
+context in which advocacy is taking place.
+
+Campaign narratives should combine **moral framing, evidence-based
+arguments, and credible institutional signals** in order to influence
+decision making.
+
+Advocacy communications should therefore move beyond purely informational
+approaches and instead seek to shape how audiences **interpret the ethical
+and social meaning of the issue being addressed**.
+"""
+
+    st.subheader("Advocacy Strategy")
+    st.write(strategy)
 
 # ---------------------------------------------------
 # PDF REPORT
 # ---------------------------------------------------
 
-    if st.button("Download Strategy Report"):
+    if st.button("Download Strategy Brief"):
 
         pdf=FPDF()
         pdf.add_page()
-
         pdf.set_font("Arial",size=12)
 
         report=f"""
-BAAMT Behavioural Strategy Report
+BAAMT Behavioural Advocacy Strategy Report
 
 Audience: {audience_type}
 Geography: {geography}
 Campaign Type: {campaign_type}
 
-Moral Scores
+Moral Profile
 Care: {care}
 Fairness: {fairness}
 Authority: {authority}
@@ -310,17 +309,24 @@ Purity: {purity}
 Behavioural Segment:
 {segment}
 
-Recommended Strategy:
+Reform Orientation:
+{reform_orientation}
+
+Risk Profile:
+{risk_profile}
+
+Advocacy Lever:
+{advocacy_lever}
+
+Campaign Strategy Plan:
+{strategy_plan}
+
+Advocacy Strategy:
 {strategy}
 """
 
         pdf.multi_cell(0,8,report)
+        pdf.output("baamt_strategy_report.pdf")
 
-        pdf.output("baamt_report.pdf")
-
-        with open("baamt_report.pdf","rb") as f:
-            st.download_button(
-                "Download PDF",
-                f,
-                "baamt_report.pdf"
-            )
+        with open("baamt_strategy_report.pdf","rb") as f:
+            st.download_button("Download PDF",f,"baamt_strategy_report.pdf")
