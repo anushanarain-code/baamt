@@ -307,6 +307,103 @@ and contribute to broader social well-being.
     st.write(brief)
 
     st.divider()
+    # ---------- ADVANCED STRATEGY MODULE ----------
+
+st.header("11️⃣ Message Framing Examples")
+
+framing = f"""
+Based on the moral profile identified earlier, several message framing
+approaches are likely to resonate with this audience.
+
+If compassion-oriented arguments are influential, messaging should focus
+on clearly explaining the real-world harms caused by existing systems and
+how practical reforms could reduce suffering.
+
+If fairness concerns are present, advocates can emphasise how reforms
+correct systemic imbalances and ensure that responsibilities and benefits
+are distributed more equitably across society.
+
+Where institutional values are important, it can be effective to frame
+proposals as strengthening governance systems and helping public
+institutions fulfil their responsibilities more effectively.
+
+Advocates should test multiple framing approaches to identify which
+combination of ethical, economic, and institutional narratives produces
+the strongest engagement with the target audience.
+"""
+
+st.write(framing)
+
+
+st.header("12️⃣ Coalition Strategy")
+
+coalition = f"""
+Advocacy campaigns are often more effective when they are supported by
+diverse coalitions rather than single organisations acting alone.
+
+For this campaign context involving **{stakeholder}**, potential coalition
+partners may include research organisations, civil society groups,
+policy experts, and institutions that already have credibility with
+the target audience.
+
+Coalitions can increase legitimacy, expand communication reach, and
+demonstrate that the proposed reforms are supported by a broad range of
+stakeholders rather than representing the agenda of a single advocacy
+organisation.
+
+Where possible, advocates should identify partners that bring different
+strengths, such as technical expertise, policy credibility, public
+visibility, or grassroots mobilisation capacity.
+"""
+
+st.write(coalition)
+
+
+st.header("13️⃣ Policy Pathway")
+
+policy = f"""
+Successful advocacy campaigns often require a clear pathway from
+problem identification to policy adoption.
+
+For a campaign focused on **{campaign}**, the pathway may involve
+several stages including agenda setting, policy development,
+stakeholder consultation, and formal institutional adoption.
+
+Advocates should identify key decision-makers, understand the
+institutional processes through which policy change occurs,
+and develop strategies to introduce evidence and recommendations
+at the moments when they are most likely to influence outcomes.
+
+This often involves engaging both technical experts and
+political stakeholders to ensure that proposals are seen as
+credible, practical, and politically feasible.
+"""
+
+st.write(policy)
+
+
+st.header("14️⃣ Opposition Risk Analysis")
+
+risk_analysis = """
+Advocacy campaigns should anticipate potential sources of resistance
+or opposition. These may come from stakeholders with economic
+interests in maintaining the status quo, institutional actors who
+are cautious about regulatory change, or audience segments that
+perceive reforms as threatening cultural or social norms.
+
+Understanding these concerns in advance allows advocates to design
+messages that address fears, clarify misconceptions, and emphasise
+the broader benefits of reform.
+
+Effective campaigns do not simply present arguments for change;
+they also proactively engage with the concerns of critics and
+demonstrate that proposed solutions are responsible, balanced,
+and beneficial for society as a whole.
+"""
+
+st.write(risk_analysis)
+
+st.divider()
 
     # ---------- FORMATTED PDF REPORT ----------
 
@@ -346,6 +443,10 @@ and contribute to broader social well-being.
     add_section("Geographic Messaging Adjustment",geo)
     add_section("Campaign Strategy Plan",strategy)
     add_section("Advocacy Strategy Brief",brief)
+    add_section("Message Framing Examples",framing)
+    add_section("Coalition Strategy",coalition)
+    add_section("Policy Pathway",policy)
+    add_section("Opposition Risk Analysis",risk_analysis)
 
     pdf_bytes=bytes(pdf.output(dest="S"))
 
