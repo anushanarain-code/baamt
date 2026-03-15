@@ -1,174 +1,176 @@
 import streamlit as st
-import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-from fpdf import FPDF
-import textwrap
 
-st.set_page_config(page_title="BAAMT - Behavioural Advocacy and Messaging Tool", layout="wide")
+st.set_page_config(page_title="BAAMT", layout="wide")
 
-st.title("🧠 BAAMT")
-st.subheader("Behavioural Advocacy and Messaging Tool")
-st.markdown("""
-BAAMT helps advocacy organizations design messaging strategies based on the moral values of their target audience. 
-Complete the assessment below to generate a behavioural profile and recommended messaging strategy.
-""")
+st.title("BAAMT – Behavioural Advocacy and Messaging Tool")
 
-# ---------- Audience Context ----------
+st.write(
+"BAAMT helps advocacy organizations design messaging strategies based on "
+"the moral values, trust orientation, and risk sensitivities of their target audiences."
+)
+
+# -------------------------
+# Audience Inputs
+# -------------------------
+
 st.header("Audience Information")
-st.markdown("**Please select the target audience, geography, and campaign type.**")
 
-audience = st.selectbox("Select Target Audience", ["General Public", "Policy Makers", "Youth", "Professionals"])
-geography = st.selectbox("Select Geography", ["India", "Global", "Europe", "USA"])
-stakeholder = st.selectbox("Select Stakeholder Group", ["General Public", "Community Leaders", "Organizations"])
-campaign = st.selectbox("Select Campaign Type", ["Behaviour Change", "Policy Advocacy", "Education & Awareness"])
+audience = st.selectbox("Audience Type", [
+"General Public","Policy Makers","Professionals","Youth"
+])
 
-st.divider()
+geography = st.selectbox("Geography", [
+"India","Global","Europe","USA"
+])
 
-# ---------- Behavioural Assessment ----------
+stakeholder = st.selectbox("Stakeholder Type", [
+"General Public","Community Leaders","Organizations"
+])
+
+campaign = st.selectbox("Campaign Type", [
+"Behaviour Change","Policy Advocacy","Awareness Campaign"
+])
+
+# -------------------------
+# Theoretical Framework
+# -------------------------
+
+st.header("Theoretical Framework")
+
+framework = (
+"BAAMT is grounded in Moral Foundations Theory, a framework in moral psychology "
+"which proposes that human moral reasoning is influenced by five key domains: "
+"Care/Harm, Fairness/Cheating, Loyalty/Betrayal, Authority/Subversion, and "
+"Purity/Degradation. Different audiences emphasize these foundations differently. "
+"By identifying which moral values are most salient for a target audience, "
+"advocacy organizations can craft messages that resonate with existing moral "
+"intuitions rather than relying solely on abstract arguments."
+)
+
+st.write(framework)
+
+# -------------------------
+# Behavioural Questions
+# -------------------------
+
 st.header("Behavioural Assessment")
-st.markdown("""
-Rate the following statements from 1 (Strongly Disagree) to 5 (Strongly Agree). 
-These questions are based on **Moral Foundations Theory**, which suggests that people's ethical and moral judgments are shaped by universal domains such as care/harm, fairness, authority, loyalty, and purity.
-""")
 
-# Example questions
 questions = {
-    "Care/Harm": "Preventing suffering should be a top priority in public policy.",
-    "Fairness": "Fair treatment matters even if it requires economic trade-offs.",
-    "Authority": "Society functions best when people respect authority and institutions.",
-    "Loyalty": "Loyalty to one's community should guide political decision-making.",
-    "Purity": "Purity and moral cleanliness are important social values."
+"Care":"Preventing suffering should be a top priority in public policy.",
+"Fairness":"Fair treatment matters even if it requires economic trade-offs.",
+"Authority":"Society functions best when people respect authority.",
+"Loyalty":"Loyalty to one's community should guide decision-making.",
+"Purity":"Purity and moral cleanliness are important social values."
 }
 
-responses = {}
-for key, q in questions.items():
-    responses[key] = st.slider(q, 1, 5, 3)
+scores = {}
 
-st.divider()
+for key,q in questions.items():
+    scores[key] = st.slider(q,1,5,3)
 
-# ---------- Compute Scores ----------
-# Simple average per foundation
-scores = {k: v for k, v in responses.items()}
+# -------------------------
+# Radar Chart
+# -------------------------
 
-# Generate radar chart
-labels = list(scores.keys())
-values = list(scores.values())
-values += values[:1]  # close the circle
+labels=list(scores.keys())
+values=list(scores.values())
+values+=values[:1]
 
-angles = np.linspace(0, 2 * np.pi, len(labels), endpoint=False).tolist()
-angles += angles[:1]
+angles=np.linspace(0,2*np.pi,len(labels),endpoint=False)
+angles=np.concatenate((angles,[angles[0]]))
 
-fig, ax = plt.subplots(figsize=(6,6), subplot_kw=dict(polar=True))
-ax.plot(angles, values, color="blue", linewidth=2, marker='o')
-ax.fill(angles, values, color="skyblue", alpha=0.25)
+fig,ax=plt.subplots(figsize=(5,5),subplot_kw=dict(polar=True))
+ax.plot(angles,values)
+ax.fill(angles,values,alpha=0.2)
 ax.set_xticks(angles[:-1])
 ax.set_xticklabels(labels)
-ax.set_yticks([1,2,3,4,5])
-ax.set_yticklabels(["1","2","3","4","5"])
-ax.grid(True)
+
 st.pyplot(fig)
 
-st.divider()
+# -------------------------
+# Interpretation
+# -------------------------
 
-# ---------- Generate Results ----------
-st.header("Audience Moral Profile")
-for key, val in scores.items():
-    st.write(f"**{key}:** {val}")
+segment = (
+"This audience demonstrates a mixed moral profile. Messaging strategies "
+"should therefore combine compassion-based appeals with fairness narratives "
+"and concrete examples that illustrate real-world consequences."
+)
 
-# Behavioural Segment (longer, reader-friendly)
-segment = ("Mixed moral audiences whose responses depend on contextual framing and coalition-based messaging. "
-           "For example, some individuals prioritize harm reduction while others focus on tradition or authority. "
-           "Understanding these differences helps in designing effective messaging campaigns.")
+strategy = (
+"Effective campaigns for this audience should integrate storytelling, "
+"credible evidence, and culturally relevant examples. Messages that "
+"highlight practical outcomes and shared benefits are more likely to "
+"generate engagement."
+)
 
-st.subheader("Behavioural Segment")
-st.write(segment)
+risk = (
+"This audience demonstrates moderate sensitivity to social and moral risk. "
+"Advocacy messaging should focus on pragmatic improvements rather than "
+"framing issues in highly confrontational moral terms."
+)
 
-# Reform Orientation
-reform = ("This audience may be receptive to transformative or constructive advocacy narratives that highlight social change, fairness, and protection of vulnerable groups. "
-          "Messaging should include practical examples, societal benefits, and clear steps for positive action.")
+trust = (
+"Institutional trust among this audience is variable. Messages should "
+"therefore emphasize transparency, credible data sources, and examples "
+"of successful policy implementation."
+)
 
-st.subheader("Reform Orientation")
-st.write(reform)
+# -------------------------
+# Generate Report
+# -------------------------
 
-# Risk Profile
-risk = ("Moderate sensitivity to moral and social risk. Advocacy messages can focus on evidence, illustrative stories, and harm reduction techniques without triggering resistance. "
-        "Examples include explaining the benefits of a policy through concrete scenarios or case studies.")
+if st.button("Generate Report"):
 
-st.subheader("Risk Sensitivity Profile")
-st.write(risk)
+    st.header("Audience Profile")
 
-# Institutional Trust
-trust = ("Trust levels toward institutions vary. Messaging may need to emphasize transparency, reliability, and track records of organizations or policies. "
-         "Highlight real-world successes to strengthen credibility.")
+    st.write("Audience:", audience)
+    st.write("Geography:", geography)
+    st.write("Stakeholder:", stakeholder)
+    st.write("Campaign Type:", campaign)
 
-st.subheader("Institutional Trust Orientation")
-st.write(trust)
+    st.subheader("Behavioural Segment")
+    st.write(segment)
 
-# Advocacy Lever
-lever = ("Primary advocacy approaches could include public campaigns, coalition building, and sharing evidence with community leaders. "
-         "Practical examples include organizing community meetings, targeted social media campaigns, or policy briefings.")
+    st.subheader("Risk Sensitivity")
+    st.write(risk)
 
-st.subheader("Primary Advocacy Lever")
-st.write(lever)
+    st.subheader("Institutional Trust")
+    st.write(trust)
 
-# Campaign Strategy
-strategy = ("A comprehensive campaign plan should integrate messaging, coalition support, and iterative feedback mechanisms to ensure engagement across diverse moral audiences. "
-            "It should be adaptable to local culture and legal frameworks, highlighting tangible benefits.")
+    st.subheader("Advocacy Strategy")
+    st.write(strategy)
 
-st.subheader("Campaign Strategy Plan")
-st.write(strategy)
+    # Create downloadable report
+    report = f"""
+BAAMT Advocacy Report
 
-# Full Advocacy Strategy
-brief = ("The advocacy strategy combines moral framing, evidence-based messages, and actionable steps for influencing the target audience. "
-         "Include clear examples, recommended channels, and potential risks. "
-         "For instance, a campaign to reduce harm could include both storytelling and quantitative evidence to persuade multiple audience segments.")
+Audience: {audience}
+Geography: {geography}
+Stakeholder: {stakeholder}
+Campaign Type: {campaign}
 
-st.subheader("Full Advocacy Strategy Brief")
-st.write(brief)
+THEORETICAL FRAMEWORK
+{framework}
 
-st.divider()
+BEHAVIOURAL SEGMENT
+{segment}
 
-# ---------- PDF Generation ----------
-def generate_pdf():
-    pdf = FPDF()
-    pdf.add_page()
-    pdf.set_font("Arial", size=12)
+RISK SENSITIVITY
+{risk}
 
-    def add_section(title, text):
-        pdf.set_font("Arial", "B", 12)
-        pdf.cell(0, 7, title, ln=True)
-        pdf.set_font("Arial", "", 11)
-        wrapped = textwrap.wrap(text, 90)
-        for line in wrapped:
-            pdf.multi_cell(0, 6, line)  # safely wrap long text
-        pdf.ln(2)
+INSTITUTIONAL TRUST
+{trust}
 
-    pdf.set_font("Arial", "B", 16)
-    pdf.cell(0, 10, "BAAMT Advocacy Strategy Report", ln=True)
-    pdf.ln(4)
+ADVOCACY STRATEGY
+{strategy}
+"""
 
-    pdf.set_font("Arial", "", 11)
-    pdf.multi_cell(0,6, f"Audience: {audience}")
-    pdf.multi_cell(0,6, f"Geography: {geography}")
-    pdf.multi_cell(0,6, f"Stakeholder: {stakeholder}")
-    pdf.multi_cell(0,6, f"Campaign Objective: {campaign}")
-
-    add_section("Behavioural Segment", segment)
-    add_section("Reform Orientation", reform)
-    add_section("Risk Sensitivity Profile", risk)
-    add_section("Institutional Trust Orientation", trust)
-    add_section("Primary Advocacy Lever", lever)
-    add_section("Campaign Strategy Plan", strategy)
-    add_section("Full Advocacy Strategy Brief", brief)
-
-    return pdf.output(dest="S").encode("latin-1")  # stable encoding
-
-if st.button("Download BAAMT Report (PDF)"):
-    pdf_bytes = generate_pdf()
     st.download_button(
-        label="Download PDF Report",
-        data=pdf_bytes,
-        file_name="BAAMT_Report.pdf",
-        mime="application/pdf"
+        label="Download Report",
+        data=report,
+        file_name="baamt_report.txt",
+        mime="text/plain"
     )
