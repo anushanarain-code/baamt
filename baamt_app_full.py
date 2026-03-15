@@ -8,7 +8,7 @@ st.set_page_config(page_title="BAAMT", layout="wide")
 # ---------------------------------------------------
 
 st.title("BAAMT – Behavioural Advocacy and Messaging Tool")
-
+st.caption("Prototype developed by Anusha Narain")
 st.write(
 "BAAMT is a behavioural analysis prototype designed to support advocacy organisations, "
 "policy researchers, and campaign strategists in designing more effective messaging. "
