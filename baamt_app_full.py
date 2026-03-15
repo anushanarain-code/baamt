@@ -53,6 +53,49 @@ campaign = st.selectbox(
 )
 
 # ---------------------------------------------------
+# THEORY SECTION
+# ---------------------------------------------------
+
+st.header("Theoretical Framework: Moral Foundations Theory")
+
+st.markdown("""
+BAAMT draws on **Moral Foundations Theory**, a framework developed by
+social psychologists such as Jonathan Haidt to explain how people
+intuitively evaluate ethical and political issues.
+
+The theory suggests that human moral reasoning is influenced by several
+core psychological foundations. These foundations operate as intuitive
+moral lenses through which people interpret arguments, policies, and
+social behaviour.
+
+The five foundations included in this assessment are:
+
+**Care / Harm**  
+Concerns about compassion, protection, and the reduction of suffering.
+
+**Fairness / Justice**  
+Concerns about equality, reciprocity, and whether systems distribute
+benefits and responsibilities fairly.
+
+**Authority / Respect**  
+Concerns about institutional order, leadership, and the importance
+of maintaining stable social systems.
+
+**Loyalty / Solidarity**  
+Concerns about community belonging, collective identity, and protecting
+one's social group.
+
+**Purity / Integrity**  
+Concerns about ethical integrity, moral responsibility, and maintaining
+societal standards.
+
+Research suggests that advocacy messages that resonate with the moral
+priorities of an audience are more likely to be persuasive. BAAMT uses
+these foundations to estimate which moral narratives may be most
+effective in a given advocacy context.
+""")
+
+# ---------------------------------------------------
 # Behaviour Questionnaire
 # ---------------------------------------------------
 
@@ -115,7 +158,7 @@ foundation_scores = {
 dominant = max(foundation_scores, key=foundation_scores.get)
 
 # ---------------------------------------------------
-# Moral Foundations Chart (SAFE ADDITION)
+# Moral Foundations Chart
 # ---------------------------------------------------
 
 st.subheader("Moral Foundations Profile")
@@ -132,131 +175,61 @@ chart_data = chart_data.set_index("Foundation")
 st.bar_chart(chart_data)
 
 # ---------------------------------------------------
-# Context Analysis
-# ---------------------------------------------------
-
-context_analysis = f"""
-The campaign context selected for this assessment combines the
-audience type **{audience}**, the geographical environment **{geography}**,
-the stakeholder category **{stakeholder}**, and the strategic campaign
-objective **{campaign}**.
-
-These contextual variables influence how advocacy messages are
-interpreted and how ideas circulate within policy and social
-systems. For example, advocacy operating in the **{geography}**
-environment may interact with specific institutional structures
-and regulatory traditions. Likewise, the selected audience group,
-**{audience}**, may evaluate advocacy arguments through different
-lenses depending on whether they prioritise personal values,
-professional expertise, or institutional credibility.
-
-The role of **{stakeholder}** actors also shapes advocacy outcomes.
-Messages that resonate with these actors may spread more widely
-through networks, public discourse, or institutional processes.
-
-Finally, the strategic objective of the campaign — **{campaign}** —
-determines whether the focus should be on changing everyday
-behaviour, influencing policy decisions, or building broader
-public awareness around the issue.
-"""
-
-# ---------------------------------------------------
-# Moral Analysis
-# ---------------------------------------------------
-
-foundation_analysis = f"""
-The questionnaire responses suggest that the dominant moral
-foundation shaping audience responses is **{dominant}**.
-
-Moral foundations influence how people intuitively interpret
-ethical and political questions. When advocacy messages align
-with these intuitive moral priorities, they are more likely to
-be perceived as credible and persuasive.
-"""
-
-# ---------------------------------------------------
-# Reform Orientation
-# ---------------------------------------------------
-
-avg = sum(foundation_scores.values())/5
-
-if avg >=4:
-    reform_orientation = """
-The response pattern suggests that the audience may be receptive
-to more ambitious reforms when these reforms are framed as morally
-justified and socially beneficial.
-"""
-else:
-    reform_orientation = """
-The response pattern suggests that the audience may prefer gradual
-or incremental reforms that build upon existing systems.
-"""
-
-# ---------------------------------------------------
-# Risk Profile
-# ---------------------------------------------------
-
-risk_profile = f"""
-Several strategic risks emerge from this behavioural profile.
-Messaging that contradicts the audience's dominant moral
-foundation (**{dominant}**) may appear unconvincing. In addition,
-campaigns operating in **{geography}** must remain sensitive to
-local institutional dynamics and policy debates.
-"""
-
-# ---------------------------------------------------
-# Campaign Strategy
-# ---------------------------------------------------
-
-campaign_strategy = f"""
-The recommended campaign strategy integrates the moral foundations
-profile with the broader campaign context.
-
-Because **{dominant}** is the dominant moral foundation, advocacy
-messages should emphasise themes associated with this value system.
-However, these narratives must also be adapted to the communication
-environment defined by the selected audience (**{audience}**) and
-geographical setting (**{geography}**).
-
-Stakeholder dynamics involving **{stakeholder}** may also influence
-how messages spread and gain legitimacy. Strategic partnerships,
-institutional engagement, or community endorsement may therefore
-strengthen the campaign's impact.
-
-Finally, the strategic objective of the campaign (**{campaign}**)
-determines whether messaging should emphasise behavioural norms,
-policy reforms, or broader public awareness.
-"""
-
-# ---------------------------------------------------
-# Messaging Strategy
-# ---------------------------------------------------
-
-messaging_strategy = f"""
-Effective messaging should combine moral resonance with contextual
-credibility. Because **{dominant}** is the dominant moral foundation,
-messages should foreground narratives aligned with this value.
-
-At the same time, communication should be tailored to the selected
-audience (**{audience}**) and policy environment (**{geography}**).
-Messages may gain greater legitimacy when reinforced by relevant
-stakeholders such as **{stakeholder}** actors.
-
-By integrating moral framing with audience context and campaign
-objectives, advocacy organisations can design communication that
-is both persuasive and strategically coherent.
-"""
-
-# ---------------------------------------------------
-# Example Messaging
+# Example Messaging (Expanded)
 # ---------------------------------------------------
 
 example_messages = {
-"Care":"Policies that reduce suffering can strengthen society as a whole.",
-"Fairness":"Fair systems ensure that responsibility and benefits are shared equitably.",
-"Authority":"Strong institutions require clear standards and responsible governance.",
-"Loyalty":"Communities thrive when we work together to protect shared values.",
-"Purity":"Ethical integrity is essential for a healthy and responsible society."
+
+"Care":
+"""
+Every policy decision has real consequences for vulnerable individuals
+and communities. By prioritising reforms that reduce suffering and
+protect those who are most at risk, we can create systems that reflect
+our shared commitment to compassion and responsibility. Thoughtful
+policy change today can help build a society where fewer individuals
+are left exposed to preventable harm.
+""",
+
+"Fairness":
+"""
+A well-functioning society depends on systems that treat people fairly
+and distribute responsibilities in a balanced way. When policies allow
+costs or harms to be shifted onto others without accountability,
+inequalities deepen and public trust erodes. By strengthening rules
+that ensure transparency and fairness, we can create institutions
+that reward responsible behaviour and protect the interests of all.
+""",
+
+"Authority":
+"""
+Strong and credible institutions are essential for maintaining
+social stability and public trust. Effective governance requires
+clear standards, responsible oversight, and policies that reinforce
+confidence in the systems that regulate economic and social life.
+Strengthening institutional accountability can therefore play a key
+role in ensuring that regulations operate as intended and that
+public interests are protected.
+""",
+
+"Loyalty":
+"""
+Communities thrive when people feel a shared responsibility for
+protecting collective wellbeing. Policies that strengthen community
+resilience and reinforce shared values can help ensure that social
+systems continue to serve the long-term interests of society.
+Working together to support responsible reforms can therefore help
+build stronger and more resilient communities.
+""",
+
+"Purity":
+"""
+Societies are ultimately judged by the ethical standards they uphold.
+When institutions and industries operate without clear moral
+accountability, public confidence and social trust can deteriorate.
+Ensuring that policies promote integrity, responsibility, and ethical
+conduct helps maintain the moral foundations on which stable and
+trustworthy institutions depend.
+"""
 }
 
 # ---------------------------------------------------
@@ -265,25 +238,7 @@ example_messages = {
 
 if st.button("Generate Report"):
 
-    st.header("Audience Context Analysis")
-    st.write(context_analysis)
-
-    st.header("Moral Foundations Analysis")
-    st.write(foundation_analysis)
-
-    st.header("Reform Orientation")
-    st.write(reform_orientation)
-
-    st.header("Risk Profile")
-    st.write(risk_profile)
-
-    st.header("Campaign Strategy")
-    st.write(campaign_strategy)
-
-    st.header("Messaging Strategy")
-    st.write(messaging_strategy)
-
-    st.header("Example Advocacy Messages")
+    st.header("Example Advocacy Message")
     st.write(example_messages[dominant])
 
     report = f"""
@@ -296,25 +251,7 @@ Campaign Type: {campaign}
 
 Dominant Moral Foundation: {dominant}
 
-Audience Context Analysis
-{context_analysis}
-
-Moral Foundations Analysis
-{foundation_analysis}
-
-Reform Orientation
-{reform_orientation}
-
-Risk Profile
-{risk_profile}
-
-Campaign Strategy
-{campaign_strategy}
-
-Messaging Strategy
-{messaging_strategy}
-
-Example Message
+Example Advocacy Message
 {example_messages[dominant]}
 """
 
