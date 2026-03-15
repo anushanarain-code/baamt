@@ -17,21 +17,55 @@ st.write(
 
 st.header("Audience Information")
 
-audience = st.selectbox("Audience Type", [
-"General Public","Policy Makers","Professionals","Youth"
-])
+audience = st.selectbox(
+"Audience Type",
+["General Public","Policy Makers","Professionals","Youth"]
+)
 
-geography = st.selectbox("Geography", [
-"India","Global","Europe","USA"
-])
+geography = st.selectbox(
+"Geography",
+["India","Global","Europe","USA"]
+)
 
-stakeholder = st.selectbox("Stakeholder Type", [
-"General Public","Community Leaders","Organizations"
-])
+stakeholder = st.selectbox(
+"Stakeholder Type",
+["General Public","Community Leaders","Organizations"]
+)
 
-campaign = st.selectbox("Campaign Type", [
-"Behaviour Change","Policy Advocacy","Awareness Campaign"
-])
+campaign = st.selectbox(
+"Campaign Type",
+["Behaviour Change","Policy Advocacy","Awareness Campaign"]
+)
+
+# -------------------------
+# Explanations
+# -------------------------
+
+audience_explanations = {
+"General Public":"This audience consists of citizens and consumers whose attitudes and everyday behaviours influence social norms and market demand.",
+"Policy Makers":"This audience includes legislators, regulators, and government officials responsible for designing and implementing policy frameworks.",
+"Professionals":"This group includes industry experts, technical specialists, and professionals whose practices influence institutional behaviour.",
+"Youth":"Young audiences often shape emerging cultural values and future policy directions."
+}
+
+geography_explanations = {
+"India":"Messaging should account for India's diverse cultural contexts, federal governance structure, and evolving public policy environment.",
+"Global":"Global audiences require messaging that emphasizes universal ethical principles and cross-cultural relevance.",
+"Europe":"European contexts often emphasize regulatory frameworks, sustainability goals, and precautionary policy approaches.",
+"USA":"Messaging in the United States often resonates when framed around individual responsibility, innovation, and economic incentives."
+}
+
+stakeholder_explanations = {
+"General Public":"Members of the broader population whose attitudes and behaviours shape social acceptance of policies or innovations.",
+"Community Leaders":"Influential local actors who shape opinion within communities, including educators, activists, and religious leaders.",
+"Organizations":"Institutions such as companies, NGOs, and public agencies that implement or influence large-scale change."
+}
+
+campaign_explanations = {
+"Behaviour Change":"Campaigns focused on shifting everyday practices, habits, or consumer choices.",
+"Policy Advocacy":"Campaigns designed to influence legislation, regulations, or institutional decision-making.",
+"Awareness Campaign":"Efforts aimed at increasing public understanding and visibility of an issue."
+}
 
 # -------------------------
 # Theoretical Framework
@@ -95,8 +129,8 @@ st.pyplot(fig)
 
 segment = (
 "This audience demonstrates a mixed moral profile. Messaging strategies "
-"should therefore combine compassion-based appeals with fairness narratives "
-"and concrete examples that illustrate real-world consequences."
+"should combine compassion-based appeals with fairness narratives and "
+"clear examples that illustrate real-world consequences."
 )
 
 strategy = (
@@ -127,9 +161,16 @@ if st.button("Generate Report"):
     st.header("Audience Profile")
 
     st.write("Audience:", audience)
+    st.write(audience_explanations[audience])
+
     st.write("Geography:", geography)
+    st.write(geography_explanations[geography])
+
     st.write("Stakeholder:", stakeholder)
+    st.write(stakeholder_explanations[stakeholder])
+
     st.write("Campaign Type:", campaign)
+    st.write(campaign_explanations[campaign])
 
     st.subheader("Behavioural Segment")
     st.write(segment)
@@ -143,34 +184,59 @@ if st.button("Generate Report"):
     st.subheader("Advocacy Strategy")
     st.write(strategy)
 
-    # Create downloadable report
+    # Report text
     report = f"""
-BAAMT Advocacy Report
+# BAAMT Advocacy Report
 
-Audience: {audience}
-Geography: {geography}
-Stakeholder: {stakeholder}
-Campaign Type: {campaign}
+## Audience
+**{audience}**
 
-THEORETICAL FRAMEWORK
+{audience_explanations[audience]}
+
+## Geography
+**{geography}**
+
+{geography_explanations[geography]}
+
+## Stakeholder
+**{stakeholder}**
+
+{stakeholder_explanations[stakeholder]}
+
+## Campaign Type
+**{campaign}**
+
+{campaign_explanations[campaign]}
+
+---
+
+## Theoretical Framework
 {framework}
 
-BEHAVIOURAL SEGMENT
+---
+
+## Behavioural Segment
 {segment}
 
-RISK SENSITIVITY
+---
+
+## Risk Sensitivity
 {risk}
 
-INSTITUTIONAL TRUST
+---
+
+## Institutional Trust
 {trust}
 
-ADVOCACY STRATEGY
+---
+
+## Advocacy Strategy
 {strategy}
 """
 
     st.download_button(
         label="Download Report",
         data=report,
-        file_name="baamt_report.txt",
-        mime="text/plain"
+        file_name="baamt_report.md",
+        mime="text/markdown"
     )
