@@ -2,238 +2,272 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 from fpdf import FPDF
+import tempfile
 
 st.set_page_config(page_title="BAAMT", layout="wide")
 
 st.title("🧠 BAAMT")
 st.subheader("Behavioural Advocacy and Messaging Tool")
 
-st.write(
-"""
-BAAMT helps advocacy organisations design evidence-based messaging strategies 
-based on the moral values and behavioural orientation of their target audiences.
+st.write("""
+BAAMT helps advocacy organisations design evidence-based messaging strategies
+by analysing the moral values and behavioural orientations of different audiences.
 
-The tool draws on behavioural science frameworks including Moral Foundations 
-Theory, Social Norm Theory, and Prospect Theory to generate messaging guidance 
-for advocacy campaigns.
-"""
-)
+The tool integrates insights from behavioural science, political psychology,
+and public policy research to help advocates design more effective campaigns
+for social change and institutional reform.
+""")
 
-# -----------------------------
+st.markdown("---")
+
+st.header("Theoretical Framework")
+
+st.write(f"""
+This tool draws on insights from **Moral Foundations Theory**, a framework in
+moral psychology that proposes that human moral reasoning is structured around
+several core intuitive foundations. These include concerns about harm and care,
+fairness and justice, authority and institutional order, loyalty to social
+groups, and ideas of purity or moral integrity.
+
+Understanding how strongly an audience responds to each of these moral
+dimensions can help advocacy organisations design messages that resonate more
+deeply with the values and expectations of the people they are trying to
+persuade.
+
+BAAMT also incorporates ideas from behavioural economics and political
+communication research, recognising that advocacy messages are more effective
+when they align with existing moral intuitions, institutional trust patterns,
+and perceptions of social risk.
+""")
+
+st.markdown("---")
+
 # Audience Context
-# -----------------------------
-
 st.header("Audience Context")
 
 audience = st.selectbox(
-"Select Target Audience",
-["General Public","Policy Makers","Students","Industry Stakeholders"]
+"Target Audience",
+[
+"General Public",
+"Students and Young People",
+"Policy Makers",
+"Industry Stakeholders",
+"Civil Society Organisations"
+]
 )
 
 geography = st.selectbox(
-"Select Geography",
-["India","Global","Europe","North America"]
+"Geographic Context",
+[
+"India",
+"Global",
+"Europe",
+"North America",
+"Southeast Asia"
+]
 )
 
 stakeholder = st.selectbox(
-"Primary Stakeholder",
-["Government","Civil Society","Private Sector","Consumers"]
+"Primary Stakeholder Engagement",
+[
+"Government Institutions",
+"Corporate Actors",
+"Civil Society",
+"Consumers"
+]
 )
 
-campaign_type = st.selectbox(
-"Campaign Objective",
-["Behaviour Change","Policy Reform","Corporate Engagement","Public Awareness"]
+campaign = st.selectbox(
+"Primary Campaign Objective",
+[
+"Behaviour Change",
+"Policy Reform",
+"Corporate Engagement",
+"Public Awareness"
+]
 )
 
-# -----------------------------
-# Moral Foundations Assessment
-# -----------------------------
+st.markdown("---")
 
+# Assessment
 st.header("Behavioural Assessment")
 
 st.write("Rate the following statements from 1 (Strongly Disagree) to 5 (Strongly Agree).")
 
-care1 = st.slider("Preventing suffering should be a top priority in public policy.",1,5,3)
-fair1 = st.slider("Fair treatment matters even if it requires economic trade-offs.",1,5,3)
-auth1 = st.slider("Society functions best when people respect authority and institutions.",1,5,3)
-loyal1 = st.slider("Loyalty to one's community should guide political decision-making.",1,5,3)
-pure1 = st.slider("Purity and moral cleanliness are important social values.",1,5,3)
-care2 = st.slider("Avoiding harm to vulnerable beings is an ethical responsibility.",1,5,3)
-auth2 = st.slider("Rules and laws should be followed even when inconvenient.",1,5,3)
-fair2 = st.slider("People should prioritise fairness in markets and economic systems.",1,5,3)
-loyal2 = st.slider("Communities should protect their cultural traditions.",1,5,3)
-pure2 = st.slider("Certain practices are morally wrong regardless of consequences.",1,5,3)
+care1 = st.slider("Preventing suffering should be a central priority in public policy decisions.",1,5,3)
+fair1 = st.slider("Economic systems should prioritise fairness even when doing so involves financial trade-offs.",1,5,3)
+auth1 = st.slider("Societies function best when people respect institutions, laws, and established authority.",1,5,3)
+loyal1 = st.slider("People should show loyalty to their community and social groups when making political decisions.",1,5,3)
+pure1 = st.slider("Ideas of moral purity and social cleanliness are important to maintaining a healthy society.",1,5,3)
 
-care = (care1 + care2) / 2
-fair = (fair1 + fair2) / 2
-auth = (auth1 + auth2) / 2
-loyal = (loyal1 + loyal2) / 2
-pure = (pure1 + pure2) / 2
+care2 = st.slider("Avoiding harm to vulnerable beings is an ethical responsibility for society.",1,5,3)
+auth2 = st.slider("Rules and laws should generally be followed even when doing so may be inconvenient.",1,5,3)
+fair2 = st.slider("Markets and economic institutions should be structured to ensure fairness.",1,5,3)
+loyal2 = st.slider("Communities should actively protect their cultural traditions and shared values.",1,5,3)
+pure2 = st.slider("Some practices are morally wrong regardless of their economic or practical consequences.",1,5,3)
 
-# -----------------------------
-# Behavioural Profiling
-# -----------------------------
+st.markdown("---")
 
-st.header("Audience Moral Profile")
+if st.button("Generate Advocacy Report"):
 
-scores = {
-"Care":care,
-"Fairness":fair,
-"Authority":auth,
-"Loyalty":loyal,
-"Purity":pure
-}
+    care=(care1+care2)/2
+    fairness=(fair1+fair2)/2
+    authority=(auth1+auth2)/2
+    loyalty=(loyal1+loyal2)/2
+    purity=(pure1+pure2)/2
 
-df = pd.DataFrame(dict(r=scores.values()),index=scores.keys())
+    st.header("1️⃣ Audience Moral Profile")
 
-fig = plt.figure()
-ax = fig.add_subplot(111, polar=True)
+    scores={
+    "Care":care,
+    "Fairness":fairness,
+    "Authority":authority,
+    "Loyalty":loyalty,
+    "Purity":purity
+    }
 
-labels = list(scores.keys())
-values = list(scores.values())
-values += values[:1]
+    for k,v in scores.items():
+        st.write(f"{k}: {round(v,2)}")
 
-angles = [n / float(len(labels)) * 2 * 3.14159 for n in range(len(labels))]
-angles += angles[:1]
+    st.header("2️⃣ Moral Foundations Radar Chart")
 
-ax.plot(angles, values)
-ax.fill(angles, values, alpha=0.1)
-ax.set_xticks(angles[:-1])
-ax.set_xticklabels(labels)
+    labels=list(scores.keys())
+    values=list(scores.values())
+    values+=values[:1]
 
-st.pyplot(fig)
+    angles=[n/float(len(labels))*2*3.14159 for n in range(len(labels))]
+    angles+=angles[:1]
 
-for k,v in scores.items():
-    st.write(f"{k}: {round(v,2)}")
+    fig=plt.figure()
+    ax=fig.add_subplot(111,polar=True)
+    ax.plot(angles,values)
+    ax.fill(angles,values,alpha=0.1)
+    ax.set_xticks(angles[:-1])
+    ax.set_xticklabels(labels)
 
-# -----------------------------
-# Behavioural Interpretation
-# -----------------------------
+    st.pyplot(fig)
 
-st.header("Behavioural Analysis")
+    st.header("3️⃣ Behavioural Segment")
 
-if care > 4:
-    segment = "High empathy audience"
-elif auth > 4:
-    segment = "Institutionally oriented audience"
-elif loyal > 4:
-    segment = "Community identity audience"
-else:
-    segment = "Mixed moral audience"
+    if care>4:
+        segment="Compassion-oriented audiences who respond strongly to narratives emphasising suffering, empathy, and ethical responsibility."
+    elif authority>4:
+        segment="Institutionally aligned audiences who place strong value on stability, rules, and the legitimacy of established governance structures."
+    elif loyalty>4:
+        segment="Community-centred audiences who prioritise collective identity, social belonging, and cultural continuity."
+    else:
+        segment="Mixed moral audiences whose responses are likely to depend on contextual framing and coalition-based messaging."
 
-st.write("Behavioural Segment:",segment)
+    st.write(segment)
 
-# Reform orientation
-if auth > 3.5:
-    reform = "Incremental institutional reform is likely to be persuasive."
-else:
-    reform = "Disruptive or transformative advocacy may resonate more strongly."
+    st.header("4️⃣ Reform Orientation")
 
-st.write("Reform Orientation:",reform)
+    if authority>3.5:
+        reform="This audience is likely to favour gradual and institutional pathways to reform, meaning that advocacy efforts should emphasise responsible governance, regulatory improvement, and credible institutional leadership."
+    else:
+        reform="This audience may be receptive to more transformative or disruptive advocacy narratives that challenge existing systems and emphasise the need for deeper social change."
 
-# Risk sensitivity
-if pure > 4:
-    risk = "High sensitivity to perceived moral or cultural risks."
-else:
-    risk = "Moderate sensitivity to moral risk framing."
+    st.write(reform)
 
-st.write("Risk Profile:",risk)
+    st.header("5️⃣ Risk Sensitivity Profile")
 
-# Institutional trust
-if auth + loyal > 7:
-    trust = "High institutional trust orientation."
-else:
-    trust = "Moderate or low institutional trust orientation."
+    if purity>4:
+        risk="High sensitivity to moral or cultural risk. Messaging should acknowledge perceived threats to social norms and present reforms as morally responsible improvements rather than radical disruptions."
+    else:
+        risk="Moderate sensitivity to moral risk. Advocacy messaging can focus more directly on empirical evidence, harm reduction, and social progress narratives."
 
-st.write("Institutional Trust:",trust)
+    st.write(risk)
 
-# -----------------------------
-# Strategy Engine
-# -----------------------------
+    st.header("6️⃣ Institutional Trust Orientation")
 
-st.header("Recommended Advocacy Strategy")
+    if authority+loyalty>7:
+        trust="High institutional trust. Advocacy strategies should prioritise engagement with policy institutions, regulatory bodies, and formal governance channels."
+    else:
+        trust="Moderate or limited institutional trust. Advocacy may need to rely more heavily on public mobilisation, civil society partnerships, and social norm change."
 
-if care > 4:
-    lever = "Compassion and harm reduction framing."
-elif fair > 4:
-    lever = "Justice and fairness framing."
-elif auth > 4:
-    lever = "Institutional responsibility framing."
-else:
-    lever = "Social norm change framing."
+    st.write(trust)
 
-st.write("Primary Advocacy Lever:",lever)
+    st.header("7️⃣ Primary Advocacy Lever")
 
-# Geography adaptation
+    if care>4:
+        lever="Compassion and harm-reduction framing that emphasises the ethical responsibility to reduce suffering."
+    elif fairness>4:
+        lever="Justice and fairness framing highlighting inequality, systemic bias, and moral accountability."
+    elif authority>4:
+        lever="Institutional responsibility framing focusing on governance standards and policy leadership."
+    else:
+        lever="Social norm change framing that highlights emerging ethical expectations and shifts in public values."
 
-if geography == "India":
-    geo_message = "Messaging should consider cultural values, community leadership, and institutional legitimacy."
-elif geography == "Europe":
-    geo_message = "Messaging can emphasise regulatory standards and ethical consumption norms."
-else:
-    geo_message = "Messaging should focus on universal ethical principles and global sustainability narratives."
+    st.write(lever)
 
-st.write("Geographic Messaging Adjustment:",geo_message)
+    st.header("8️⃣ Geographic Messaging Adjustment")
 
-# Campaign strategy
+    if geography=="India":
+        geo="Advocacy communication should be attentive to cultural pluralism, respect for institutional authority, and the influence of community leadership within public discourse."
+    elif geography=="Europe":
+        geo="Messaging may emphasise regulatory standards, animal welfare norms, and ethical consumption patterns that are already embedded within public policy frameworks."
+    else:
+        geo="Messaging should emphasise universal ethical principles, sustainability narratives, and global governance frameworks."
 
-strategy = f"""
-Campaign strategy should combine narrative change with targeted institutional engagement.
-Advocacy organisations should emphasise {lever.lower()} while building coalitions with
-civil society organisations, research institutions, and policy stakeholders.
+    st.write(geo)
 
-Communication should present credible evidence, highlight ethical implications,
-and encourage stakeholders to adopt reforms that reduce harm while remaining
-consistent with the moral expectations of the audience.
+    st.header("9️⃣ Campaign Strategy Plan")
+
+    strategy=f"""
+An effective advocacy campaign for this audience should combine narrative
+framing with credible evidence and coalition-building. Organisations should
+focus on emphasising {lever.lower()} while building partnerships with
+research institutions, civil society organisations, and influential public
+voices.
+
+Communication strategies should highlight both the ethical implications of
+the issue and the practical pathways through which meaningful reform can
+occur. Where possible, campaigns should also demonstrate how proposed
+changes align with existing social values, economic incentives, and
+institutional responsibilities.
 """
 
-st.subheader("Campaign Strategy Plan")
-st.write(strategy)
+    st.write(strategy)
 
-# Advocacy strategy brief
+    st.header("🔟 Full Advocacy Strategy Brief")
 
-brief = f"""
-Audience: {audience}
+    brief=f"""
+Audience Context: {audience}
+
+Geography: {geography}
 
 Primary Stakeholder: {stakeholder}
 
-Campaign Type: {campaign_type}
+Campaign Objective: {campaign}
 
-The behavioural analysis suggests that this audience responds most strongly to
-{lever.lower()}. Advocacy communications should emphasise moral responsibility,
-evidence-based policy solutions, and the broader societal benefits of reform.
+The behavioural analysis suggests that this audience is best engaged through
+{lever.lower()}. Advocacy messaging should frame the issue in ways that
+acknowledge the moral intuitions of the audience while presenting clear
+evidence that reform is both ethically necessary and socially beneficial.
 
-Campaigns should prioritise coalition-building, expert credibility, and
-institutional engagement while gradually shifting social norms toward
-greater concern for nonhuman welfare.
+Campaigns should prioritise credible messengers, partnerships with relevant
+institutions, and strategic communication that emphasises achievable policy
+pathways. Over time, sustained advocacy efforts should aim to shift public
+norms while building the institutional conditions necessary for lasting
+reform.
 """
 
-st.subheader("Advocacy Strategy Brief")
-st.write(brief)
+    st.write(brief)
 
-# -----------------------------
-# PDF Export
-# -----------------------------
-
-def generate_pdf():
-
-    pdf = FPDF()
-    pdf.add_page()
-    pdf.set_font("Arial", size=12)
-
-    report = f"""
+    # PDF
+    report=f"""
 BAAMT Advocacy Strategy Report
 
 Audience: {audience}
-Stakeholder: {stakeholder}
 Geography: {geography}
+Stakeholder: {stakeholder}
+Campaign Objective: {campaign}
 
-Moral Profile
 Care: {care}
-Fairness: {fair}
-Authority: {auth}
-Loyalty: {loyal}
-Purity: {pure}
+Fairness: {fairness}
+Authority: {authority}
+Loyalty: {loyalty}
+Purity: {purity}
 
 Behavioural Segment
 {segment}
@@ -241,7 +275,7 @@ Behavioural Segment
 Reform Orientation
 {reform}
 
-Risk Profile
+Risk Sensitivity
 {risk}
 
 Institutional Trust
@@ -251,7 +285,7 @@ Primary Advocacy Lever
 {lever}
 
 Geographic Messaging
-{geo_message}
+{geo}
 
 Campaign Strategy
 {strategy}
@@ -260,16 +294,20 @@ Advocacy Strategy Brief
 {brief}
 """
 
-    pdf.multi_cell(0,8,report)
+    pdf=FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial",size=11)
 
-    pdf.output("baamt_report.pdf")
+    for line in report.split("\n"):
+        pdf.multi_cell(0,8,line)
 
-generate_pdf()
+    tmp_file=tempfile.NamedTemporaryFile(delete=False,suffix=".pdf")
+    pdf.output(tmp_file.name)
 
-with open("baamt_report.pdf","rb") as file:
-    st.download_button(
-        label="Download BAAMT Strategy Report",
-        data=file,
-        file_name="baamt_report.pdf",
+    with open(tmp_file.name,"rb") as f:
+        st.download_button(
+        label="Download BAAMT Report (PDF)",
+        data=f,
+        file_name="BAAMT_report.pdf",
         mime="application/pdf"
-    )
+        )
