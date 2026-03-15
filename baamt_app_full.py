@@ -1,6 +1,7 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
+from fpdf import FPDF
 
 # ---------------------------------------------------
 # PAGE CONFIG
@@ -22,33 +23,30 @@ st.subheader("Behavioural Advocacy and Messaging Tool")
 st.markdown("""
 Advocacy campaigns often fail because they assume all audiences respond to the same moral arguments.
 
-**BAAMT (Behavioural Advocacy and Messaging Tool)** helps advocacy organisations identify the **moral values most salient to a target audience**, and suggests **strategic messaging frames** based on behavioural science research.
-
-Complete the assessment below to generate an **audience moral profile and messaging strategy**.
+BAAMT helps advocacy organisations identify the **moral values most salient to a target audience**, and suggests **strategic messaging frames** based on behavioural science research.
 """)
 
 st.markdown("---")
 
 # ---------------------------------------------------
-# AUDIENCE INFORMATION
+# AUDIENCE INPUT
 # ---------------------------------------------------
 
 st.header("Audience Information")
 
 audience_type = st.selectbox(
-    "Select Target Audience",
+    "Target Audience",
     [
         "General Public",
-        "Students",
         "Policy Makers",
-        "Industry Stakeholders",
-        "Civil Society",
-        "Other"
+        "Corporate Stakeholders",
+        "Students",
+        "Civil Society"
     ]
 )
 
 geography = st.selectbox(
-    "Select Geography",
+    "Geography",
     [
         "India",
         "Global",
@@ -57,7 +55,7 @@ geography = st.selectbox(
 )
 
 campaign_type = st.selectbox(
-    "Select Campaign Type",
+    "Campaign Type",
     [
         "Behaviour Change",
         "Policy Advocacy",
@@ -69,236 +67,260 @@ campaign_type = st.selectbox(
 st.markdown("---")
 
 # ---------------------------------------------------
-# MORAL QUESTIONNAIRE
+# QUESTIONNAIRE
 # ---------------------------------------------------
 
 st.header("Behavioural Assessment")
 
-st.markdown("Rate the following statements from **1 (Strongly Disagree)** to **5 (Strongly Agree)**.")
+st.markdown("Rate from **1 (Strongly Disagree)** to **5 (Strongly Agree)**.")
 
-q1 = st.slider("Preventing suffering should be a top priority in public policy.", 1, 5)
-q2 = st.slider("Fair treatment matters even if it requires economic trade-offs.", 1, 5)
-q3 = st.slider("Society functions best when people respect authority and institutions.", 1, 5)
-q4 = st.slider("Loyalty to one's community should guide political decision-making.", 1, 5)
-q5 = st.slider("Purity and moral cleanliness are important social values.", 1, 5)
+q1 = st.slider("Preventing suffering should be a top priority in public policy.",1,5)
+q2 = st.slider("Fair treatment matters even if it requires economic trade-offs.",1,5)
+q3 = st.slider("Society functions best when people respect authority.",1,5)
+q4 = st.slider("Loyalty to one's community should guide decisions.",1,5)
+q5 = st.slider("Purity and moral cleanliness are important values.",1,5)
 
-q6 = st.slider("Avoiding harm to vulnerable beings is an ethical responsibility.", 1, 5)
-q7 = st.slider("Rules and laws should be followed even when inconvenient.", 1, 5)
-q8 = st.slider("People should prioritize fairness in markets and economic systems.", 1, 5)
-q9 = st.slider("Communities should protect their cultural traditions.", 1, 5)
-q10 = st.slider("Certain practices are morally wrong regardless of consequences.", 1, 5)
-
-st.markdown("---")
+q6 = st.slider("Avoiding harm to vulnerable beings is an ethical responsibility.",1,5)
+q7 = st.slider("Rules and laws should be followed even when inconvenient.",1,5)
+q8 = st.slider("Fairness should guide economic systems.",1,5)
+q9 = st.slider("Communities should protect their traditions.",1,5)
+q10 = st.slider("Certain practices are morally wrong regardless of consequences.",1,5)
 
 # ---------------------------------------------------
-# CALCULATE SCORES
+# SCORES
 # ---------------------------------------------------
 
-care_score = (q1 + q6) / 2
-fairness_score = (q2 + q8) / 2
-authority_score = (q3 + q7) / 2
-loyalty_score = (q4 + q9) / 2
-purity_score = (q5 + q10) / 2
+care = (q1+q6)/2
+fairness = (q2+q8)/2
+authority = (q3+q7)/2
+loyalty = (q4+q9)/2
+purity = (q5+q10)/2
 
 # ---------------------------------------------------
-# GENERATE STRATEGY BUTTON
+# GENERATE BUTTON
 # ---------------------------------------------------
 
 generate = st.button("Generate Behavioural Strategy")
-
-# ---------------------------------------------------
-# RESULTS
-# ---------------------------------------------------
 
 if generate:
 
     st.header("Audience Moral Profile")
 
-    st.write("Care / Harm:", round(care_score, 2))
-    st.progress(care_score / 5)
+    st.write("Care/Harm:",round(care,2))
+    st.progress(care/5)
 
-    st.write("Fairness:", round(fairness_score, 2))
-    st.progress(fairness_score / 5)
+    st.write("Fairness:",round(fairness,2))
+    st.progress(fairness/5)
 
-    st.write("Authority:", round(authority_score, 2))
-    st.progress(authority_score / 5)
+    st.write("Authority:",round(authority,2))
+    st.progress(authority/5)
 
-    st.write("Loyalty:", round(loyalty_score, 2))
-    st.progress(loyalty_score / 5)
+    st.write("Loyalty:",round(loyalty,2))
+    st.progress(loyalty/5)
 
-    st.write("Purity:", round(purity_score, 2))
-    st.progress(purity_score / 5)
+    st.write("Purity:",round(purity,2))
+    st.progress(purity/5)
 
     st.markdown("---")
 
-    # ---------------------------------------------------
-    # RADAR CHART
-    # ---------------------------------------------------
+# ---------------------------------------------------
+# RADAR CHART
+# ---------------------------------------------------
 
-    st.subheader("Moral Foundations Profile")
+    labels=['Care','Fairness','Authority','Loyalty','Purity']
+    values=[care,fairness,authority,loyalty,purity]
 
-    labels = ['Care', 'Fairness', 'Authority', 'Loyalty', 'Purity']
-    values = [care_score, fairness_score, authority_score, loyalty_score, purity_score]
+    angles=np.linspace(0,2*np.pi,len(labels),endpoint=False)
 
-    angles = np.linspace(0, 2 * np.pi, len(labels), endpoint=False)
+    values=np.concatenate((values,[values[0]]))
+    angles=np.concatenate((angles,[angles[0]]))
 
-    values = np.concatenate((values, [values[0]]))
-    angles = np.concatenate((angles, [angles[0]]))
+    fig=plt.figure()
+    ax=fig.add_subplot(111,polar=True)
 
-    fig = plt.figure()
-    ax = fig.add_subplot(111, polar=True)
-
-    ax.plot(angles, values)
-    ax.fill(angles, values, alpha=0.25)
-
-    ax.set_thetagrids(angles[:-1] * 180 / np.pi, labels)
+    ax.plot(angles,values)
+    ax.fill(angles,values,alpha=0.25)
+    ax.set_thetagrids(angles[:-1]*180/np.pi,labels)
 
     st.pyplot(fig)
 
-    st.markdown("---")
+# ---------------------------------------------------
+# SEGMENTATION
+# ---------------------------------------------------
 
-    # ---------------------------------------------------
-    # AUDIENCE SEGMENTATION
-    # ---------------------------------------------------
+    if care>4 and fairness>4:
+        segment="Compassion-driven reform audience"
 
-    if care_score > 4 and fairness_score > 4:
-        audience_profile = "Compassion-driven reform audience"
+    elif authority>4:
+        segment="Institutionally oriented audience"
 
-    elif authority_score > 4:
-        audience_profile = "Institutionally oriented audience"
+    elif loyalty>4:
+        segment="Community identity audience"
 
-    elif loyalty_score > 4:
-        audience_profile = "Community identity audience"
-
-    elif purity_score > 4:
-        audience_profile = "Moral purity audience"
+    elif purity>4:
+        segment="Moral purity audience"
 
     else:
-        audience_profile = "Mixed moral orientation audience"
+        segment="Mixed moral orientation audience"
 
-    st.subheader("Audience Behavioural Segment")
-
-    st.write(audience_profile)
+    st.subheader("Behavioural Segment")
+    st.write(segment)
 
     st.markdown("---")
 
-    # ---------------------------------------------------
-    # DOMINANT VALUE
-    # ---------------------------------------------------
+# ---------------------------------------------------
+# STRATEGY GENERATION
+# ---------------------------------------------------
 
-    dominant_value = max(
-        care_score,
-        fairness_score,
-        authority_score,
-        loyalty_score,
-        purity_score
-    )
+    st.header("Messaging Strategy")
 
-    st.header("Recommended Messaging Strategy")
+    dominant=max(care,fairness,authority,loyalty,purity)
 
-    # ---------------------------------------------------
-    # CARE FRAME
-    # ---------------------------------------------------
+    strategy=""
 
-    if dominant_value == care_score:
+    if dominant==care:
 
-        st.success("Primary Frame: Compassion and Harm Reduction")
+        strategy="""
+Focus messaging on **compassion and harm reduction**.
 
-        st.write("Strategic Guidance:")
-        st.write("- Emphasize suffering and protection of vulnerable beings")
-        st.write("- Use emotional storytelling")
-        st.write("- Highlight moral responsibility to reduce harm")
+Narratives that highlight the suffering of animals or vulnerable beings are likely to resonate strongly with this audience. Campaigns should use emotional storytelling, visual narratives, and moral appeals centered on empathy and protection.
 
-        st.subheader("Example Campaign Message")
+Example message:
+Millions of animals suffer in modern food systems every year. By supporting humane alternatives we can reduce immense suffering and create a kinder world.
+"""
 
-        st.info(
-            "Every year millions of animals suffer in factory farms. "
-            "By choosing plant-based foods we can prevent immense suffering."
-        )
+    elif dominant==fairness:
 
-    # ---------------------------------------------------
-    # FAIRNESS FRAME
-    # ---------------------------------------------------
+        strategy="""
+Frame the issue as **justice and systemic fairness**.
 
-    elif dominant_value == fairness_score:
+Campaign messaging should highlight inequalities, unfair subsidies, or structural injustices within food systems.
 
-        st.success("Primary Frame: Justice and Fairness")
+Example message:
+Public resources should support ethical and sustainable food systems. Redirecting subsidies toward plant-based innovation can create a fairer future for people, animals, and the planet.
+"""
 
-        st.write("Strategic Guidance:")
-        st.write("- Frame issue as injustice or unfair system")
-        st.write("- Highlight economic inequities")
-        st.write("- Emphasize ethical responsibility")
+    elif dominant==authority:
 
-        st.subheader("Example Campaign Message")
+        strategy="""
+Frame the issue around **institutional responsibility and governance**.
 
-        st.info(
-            "Taxpayers subsidize industries that harm animals and the environment. "
-            "A fair food system should support sustainable alternatives."
-        )
+Audiences with strong authority orientation respond to messages emphasizing regulation, oversight, and responsible leadership.
 
-    # ---------------------------------------------------
-    # AUTHORITY FRAME
-    # ---------------------------------------------------
+Example message:
+Strong regulatory standards are essential to ensure responsible treatment of animals and protect public health.
+"""
 
-    elif dominant_value == authority_score:
+    elif dominant==loyalty:
 
-        st.success("Primary Frame: Institutional Responsibility")
+        strategy="""
+Appeal to **community identity and shared values**.
 
-        st.write("Strategic Guidance:")
-        st.write("- Emphasize regulation and governance")
-        st.write("- Use expert endorsements")
-        st.write("- Highlight responsible leadership")
+Campaigns should emphasize protecting national traditions, communities, and future generations.
 
-        st.subheader("Example Campaign Message")
-
-        st.info(
-            "Stronger regulation is needed to ensure responsible treatment of animals "
-            "and protect public health."
-        )
-
-    # ---------------------------------------------------
-    # LOYALTY FRAME
-    # ---------------------------------------------------
-
-    elif dominant_value == loyalty_score:
-
-        st.success("Primary Frame: Community Protection")
-
-        st.write("Strategic Guidance:")
-        st.write("- Frame issue as protecting shared values")
-        st.write("- Use collective identity messaging")
-        st.write("- Appeal to cultural responsibility")
-
-        st.subheader("Example Campaign Message")
-
-        st.info(
-            "Protecting animals and the environment is part of protecting our "
-            "shared national values and future generations."
-        )
-
-    # ---------------------------------------------------
-    # PURITY FRAME
-    # ---------------------------------------------------
+Example message:
+Building sustainable food systems is part of protecting our communities and ensuring a healthy future for the next generation.
+"""
 
     else:
 
-        st.success("Primary Frame: Moral Integrity and Purity")
+        strategy="""
+Frame the issue around **moral integrity and purity**.
 
-        st.write("Strategic Guidance:")
-        st.write("- Emphasize clean and ethical consumption")
-        st.write("- Highlight contamination and moral degradation")
-        st.write("- Promote purity of lifestyle choices")
+Messaging should emphasize ethical consumption, natural living, and avoiding harmful practices.
 
-        st.subheader("Example Campaign Message")
+Example message:
+Choosing plant-based foods is a cleaner and more ethical way to live in harmony with nature.
+"""
 
-        st.info(
-            "Choosing plant-based foods is a cleaner and more ethical way "
-            "to live in harmony with nature."
-        )
+    st.write(strategy)
 
-    st.markdown("---")
+# ---------------------------------------------------
+# GEOGRAPHY ADJUSTMENT
+# ---------------------------------------------------
 
-    st.info(
-        "BAAMT provides behavioural guidance for advocacy messaging. "
-        "Strategies should always be adapted to the cultural and political context."
-    )
+    if geography=="India":
+
+        st.subheader("India-specific framing")
+
+        st.write("""
+Messaging in India can also highlight:
+
+• food system sustainability  
+• farmer transition opportunities  
+• public health and antibiotic resistance  
+• cultural traditions of plant-based diets
+""")
+
+# ---------------------------------------------------
+# AUDIENCE ADJUSTMENT
+# ---------------------------------------------------
+
+    if audience_type=="Policy Makers":
+
+        st.subheader("Policy Audience Strategy")
+
+        st.write("""
+Policy audiences respond best to:
+
+• regulatory framing  
+• economic impact analysis  
+• public health arguments  
+• institutional accountability
+""")
+
+    if audience_type=="Corporate Stakeholders":
+
+        st.subheader("Corporate Engagement Strategy")
+
+        st.write("""
+Corporate messaging should emphasize:
+
+• market opportunities  
+• innovation leadership  
+• ESG and sustainability commitments  
+• reputational benefits
+""")
+
+# ---------------------------------------------------
+# PDF REPORT
+# ---------------------------------------------------
+
+    if st.button("Download Strategy Report"):
+
+        pdf=FPDF()
+        pdf.add_page()
+
+        pdf.set_font("Arial",size=12)
+
+        report=f"""
+BAAMT Behavioural Strategy Report
+
+Audience: {audience_type}
+Geography: {geography}
+Campaign Type: {campaign_type}
+
+Moral Scores
+Care: {care}
+Fairness: {fairness}
+Authority: {authority}
+Loyalty: {loyalty}
+Purity: {purity}
+
+Behavioural Segment:
+{segment}
+
+Recommended Strategy:
+{strategy}
+"""
+
+        pdf.multi_cell(0,8,report)
+
+        pdf.output("baamt_report.pdf")
+
+        with open("baamt_report.pdf","rb") as f:
+            st.download_button(
+                "Download PDF",
+                f,
+                "baamt_report.pdf"
+            )
