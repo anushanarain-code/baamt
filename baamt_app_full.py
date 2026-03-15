@@ -15,9 +15,12 @@ st.set_page_config(page_title="BAAMT Tool", layout="wide")
 # ---------- INSTRUCTIONS & THEORY ----------
 st.title("🧠 BAAMT")
 st.markdown("""
-**Behavioural Advocacy and Messaging Tool (BAAMT)** helps advocacy organizations design messaging strategies based on the moral values of their target audience.  
+**Behavioural Advocacy and Messaging Tool (BAAMT)** helps advocacy organizations design messaging strategies 
+based on the moral values of their target audience.  
 
-**Instructions:** Complete the assessment below honestly based on your knowledge of the target audience. The tool will generate a behavioural profile, radar chart, and a comprehensive advocacy strategy report.
+**Instructions:** Before starting the assessment, please carefully read the audience information below. 
+The more accurately you understand your target audience, the better the behavioural profile and recommended 
+messaging strategy will be.  
 
 **Theoretical Framework:** This tool is grounded in **Moral Foundations Theory**, which suggests that people evaluate moral issues based on multiple dimensions:  
 - **Care/Harm:** Focus on suffering and well-being of others.  
@@ -31,7 +34,7 @@ Understanding these foundations helps tailor messages that resonate with the aud
 
 # ---------- AUDIENCE CONTEXT ----------
 st.subheader("Audience Information")
-st.markdown("Please select the target audience, geography, stakeholder type, and campaign objective before proceeding with the behavioural assessment.")
+st.markdown("Select the target audience, geography, stakeholder type, and campaign objective below. This ensures the report is customized to your context.")
 audience = st.selectbox("Select Target Audience", ["General Public", "Policy Makers", "Activists"])
 geography = st.selectbox("Select Geography", ["India", "USA", "UK", "Global"])
 stakeholder = st.selectbox("Select Stakeholder Type", ["NGO", "Government", "Corporation", "Community Group"])
@@ -39,6 +42,7 @@ campaign = st.selectbox("Select Campaign Objective", ["Behaviour Change", "Polic
 
 # ---------- BEHAVIOURAL ASSESSMENT ----------
 st.subheader("Behavioural Assessment")
+st.markdown("Rate the following statements from 1 (Strongly Disagree) to 5 (Strongly Agree). Try to answer based on the target audience's likely perspective.")
 care = st.slider("Preventing suffering should be a top priority in public policy.", 1, 5, 3)
 fairness = st.slider("Fair treatment matters even if it requires economic trade-offs.", 1, 5, 3)
 authority = st.slider("Society functions best when people respect authority and institutions.", 1, 5, 3)
@@ -192,7 +196,8 @@ if st.button("Generate BAAMT Strategy Report"):
     plt.close(fig)
     img_buffer.seek(0)
     pdf.image(img_buffer, x=30, w=150)
-    pdf_bytes = pdf.output(dest="S").encode("latin-1")
+
+    pdf_bytes = pdf.output(dest="S").encode("utf-8")  # <-- UTF-8 safe
 
     # ---------- DOWNLOAD BUTTON ----------
     st.download_button(
