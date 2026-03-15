@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 
 st.set_page_config(page_title="BAAMT", layout="wide")
 
@@ -58,19 +59,16 @@ campaign = st.selectbox(
 st.header("Behavioural Questionnaire")
 
 st.markdown("""
-The following statements explore how people evaluate ethical and social issues.
+Please rate each statement using the following scale:
 
-Please rate each statement using the scale below:
+1 – Strongly Disagree  
+2 – Disagree  
+3 – Neutral  
+4 – Agree  
+5 – Strongly Agree
 
-**1 – Strongly Disagree**  
-**2 – Disagree**  
-**3 – Neutral**  
-**4 – Agree**  
-**5 – Strongly Agree**
-
-Your responses allow the tool to estimate which **moral foundations**
-are most influential for the audience. These moral priorities are
-combined with the campaign context to generate advocacy insights.
+These responses allow the tool to estimate which **moral foundations**
+are most influential for the audience.
 """)
 
 questions = {
@@ -117,6 +115,23 @@ foundation_scores = {
 dominant = max(foundation_scores, key=foundation_scores.get)
 
 # ---------------------------------------------------
+# Moral Foundations Chart (SAFE ADDITION)
+# ---------------------------------------------------
+
+st.subheader("Moral Foundations Profile")
+
+chart_data = pd.DataFrame(
+{
+"Foundation": list(foundation_scores.keys()),
+"Score": list(foundation_scores.values())
+}
+)
+
+chart_data = chart_data.set_index("Foundation")
+
+st.bar_chart(chart_data)
+
+# ---------------------------------------------------
 # Context Analysis
 # ---------------------------------------------------
 
@@ -126,26 +141,23 @@ audience type **{audience}**, the geographical environment **{geography}**,
 the stakeholder category **{stakeholder}**, and the strategic campaign
 objective **{campaign}**.
 
-These contextual dimensions significantly influence how advocacy
-messages are interpreted. For example, audiences within the {geography}
-policy environment often evaluate advocacy proposals within existing
-institutional frameworks and political priorities. The selected
-audience group, {audience}, also shapes communication strategy
-because different audiences process information differently: some
-respond strongly to moral narratives, while others prioritise
-technical evidence or institutional credibility.
+These contextual variables influence how advocacy messages are
+interpreted and how ideas circulate within policy and social
+systems. For example, advocacy operating in the **{geography}**
+environment may interact with specific institutional structures
+and regulatory traditions. Likewise, the selected audience group,
+**{audience}**, may evaluate advocacy arguments through different
+lenses depending on whether they prioritise personal values,
+professional expertise, or institutional credibility.
 
-Stakeholder dynamics also influence advocacy outcomes. In this case,
-the role of **{stakeholder}** indicates that advocacy messages may
-spread through social networks, institutional channels, or community
-leadership structures. Finally, the chosen campaign objective,
-**{campaign}**, determines whether the communication strategy should
-prioritise behavioural change, policy reform, or broader awareness
-building.
+The role of **{stakeholder}** actors also shapes advocacy outcomes.
+Messages that resonate with these actors may spread more widely
+through networks, public discourse, or institutional processes.
 
-Taken together, these contextual variables provide the strategic
-environment within which moral narratives and advocacy messages
-must operate.
+Finally, the strategic objective of the campaign — **{campaign}** —
+determines whether the focus should be on changing everyday
+behaviour, influencing policy decisions, or building broader
+public awareness around the issue.
 """
 
 # ---------------------------------------------------
@@ -153,17 +165,13 @@ must operate.
 # ---------------------------------------------------
 
 foundation_analysis = f"""
-The behavioural questionnaire indicates that the dominant moral
-foundation for this audience appears to be **{dominant}**. Moral
-foundations influence how people intuitively interpret social and
-political issues, often shaping emotional responses before detailed
-reasoning takes place.
+The questionnaire responses suggest that the dominant moral
+foundation shaping audience responses is **{dominant}**.
 
-When advocacy messaging aligns with the dominant moral priorities
-of an audience, the message is more likely to be perceived as
-credible and persuasive. Conversely, messages that ignore these
-moral intuitions may struggle to gain traction even if they are
-factually strong.
+Moral foundations influence how people intuitively interpret
+ethical and political questions. When advocacy messages align
+with these intuitive moral priorities, they are more likely to
+be perceived as credible and persuasive.
 """
 
 # ---------------------------------------------------
@@ -174,16 +182,14 @@ avg = sum(foundation_scores.values())/5
 
 if avg >=4:
     reform_orientation = """
-The overall response pattern suggests that the audience may be open
-to relatively ambitious reforms, provided that those reforms are
-presented as ethically justified and socially beneficial.
+The response pattern suggests that the audience may be receptive
+to more ambitious reforms when these reforms are framed as morally
+justified and socially beneficial.
 """
 else:
     reform_orientation = """
 The response pattern suggests that the audience may prefer gradual
-or incremental reforms. Campaigns may therefore benefit from
-presenting change as practical improvement rather than systemic
-disruption.
+or incremental reforms that build upon existing systems.
 """
 
 # ---------------------------------------------------
@@ -191,16 +197,11 @@ disruption.
 # ---------------------------------------------------
 
 risk_profile = f"""
-The behavioural and contextual profile suggests several strategic
-risks that campaigns should consider. Messaging that contradicts
-the audience's dominant moral foundation (**{dominant}**) may
-appear ideologically misaligned. In addition, campaigns operating
-in the **{geography}** environment must remain sensitive to local
-institutional norms and policy debates.
-
-Finally, communication strategies that overlook the influence of
-**{stakeholder}** groups may struggle to build legitimacy or
-momentum within relevant networks.
+Several strategic risks emerge from this behavioural profile.
+Messaging that contradicts the audience's dominant moral
+foundation (**{dominant}**) may appear unconvincing. In addition,
+campaigns operating in **{geography}** must remain sensitive to
+local institutional dynamics and policy debates.
 """
 
 # ---------------------------------------------------
@@ -208,28 +209,23 @@ momentum within relevant networks.
 # ---------------------------------------------------
 
 campaign_strategy = f"""
-The recommended campaign strategy integrates three dimensions of
-analysis generated by this tool: the **moral foundations profile**,
-the **audience and stakeholder context**, and the **campaign
-objective**.
+The recommended campaign strategy integrates the moral foundations
+profile with the broader campaign context.
 
-Because the dominant moral foundation is **{dominant}**, advocacy
+Because **{dominant}** is the dominant moral foundation, advocacy
 messages should emphasise themes associated with this value system.
-However, these moral narratives must also be adapted to the specific
-communication environment represented by the selected audience
-(**{audience}**) and geographic context (**{geography}**).
+However, these narratives must also be adapted to the communication
+environment defined by the selected audience (**{audience}**) and
+geographical setting (**{geography}**).
 
-Within this context, the role of **{stakeholder}** actors suggests
-that building credibility and social endorsement may be important
-for amplifying the campaign's influence. Campaign strategies may
-therefore benefit from partnerships, coalition building, or
-institutional engagement depending on the nature of the campaign.
+Stakeholder dynamics involving **{stakeholder}** may also influence
+how messages spread and gain legitimacy. Strategic partnerships,
+institutional engagement, or community endorsement may therefore
+strengthen the campaign's impact.
 
-The strategic objective of **{campaign}** further shapes the
-approach. Behaviour change campaigns may emphasise social norms
-and everyday decisions, whereas policy advocacy campaigns may
-focus on regulatory frameworks, governance structures, and
-institutional accountability.
+Finally, the strategic objective of the campaign (**{campaign}**)
+determines whether messaging should emphasise behavioural norms,
+policy reforms, or broader public awareness.
 """
 
 # ---------------------------------------------------
@@ -237,31 +233,18 @@ institutional accountability.
 # ---------------------------------------------------
 
 messaging_strategy = f"""
-An effective messaging strategy should integrate moral framing,
-audience expectations, and the institutional environment in which
-the campaign operates.
+Effective messaging should combine moral resonance with contextual
+credibility. Because **{dominant}** is the dominant moral foundation,
+messages should foreground narratives aligned with this value.
 
-Because the dominant moral foundation identified in the questionnaire
-is **{dominant}**, campaign messages should foreground values and
-narratives associated with this moral orientation. At the same time,
-the communication style should reflect the characteristics of the
-target audience (**{audience}**) and the broader policy context
-(**{geography}**).
+At the same time, communication should be tailored to the selected
+audience (**{audience}**) and policy environment (**{geography}**).
+Messages may gain greater legitimacy when reinforced by relevant
+stakeholders such as **{stakeholder}** actors.
 
-In addition, stakeholder dynamics involving **{stakeholder}** may
-shape how messages spread and gain legitimacy. Messages that are
-reinforced by credible voices or institutions may therefore be
-particularly influential.
-
-Finally, the strategic objective of the campaign (**{campaign}**)
-should guide the tone and framing of communication. Behaviour
-change campaigns may focus on everyday practices and social norms,
-while policy advocacy campaigns may emphasise governance,
-regulatory reform, and institutional accountability.
-
-By aligning moral narratives with audience context and campaign
-goals, advocacy organisations can design messages that are both
-ethically resonant and strategically effective.
+By integrating moral framing with audience context and campaign
+objectives, advocacy organisations can design communication that
+is both persuasive and strategically coherent.
 """
 
 # ---------------------------------------------------
