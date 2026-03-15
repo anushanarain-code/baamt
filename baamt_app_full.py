@@ -5,10 +5,11 @@ st.set_page_config(page_title="BAAMT", layout="wide")
 st.title("BAAMT – Behavioural Advocacy and Messaging Tool")
 
 st.write(
-"BAAMT is a behavioural analysis tool designed to help advocacy organizations, "
-"policy researchers, and social campaigners understand how different audiences "
-"may respond to advocacy messaging. The tool combines insights from behavioural "
-"science and moral psychology to generate strategic guidance for advocacy campaigns."
+"BAAMT is a behavioural analysis tool designed to help advocacy organisations, "
+"policy researchers, and campaigners understand how different audiences may "
+"interpret advocacy messaging. The tool combines insights from behavioural "
+"science and moral psychology to generate strategic guidance for designing "
+"more effective advocacy campaigns."
 )
 
 # ---------------------------------------------------
@@ -20,13 +21,13 @@ st.header("Audience Context")
 st.markdown("""
 Select the context in which your advocacy campaign operates.
 
-These contextual variables shape how advocacy messages are interpreted and
-help the tool generate more relevant strategic recommendations.
+These contextual variables shape how advocacy messages are interpreted
+and help generate a more accurate strategic assessment.
 
-**Audience Type** – The primary group whose attitudes or behaviour the campaign aims to influence.  
-**Geography** – The political and regulatory environment in which advocacy takes place.  
-**Stakeholder Type** – Actors who influence public discourse or policy decisions.  
-**Campaign Type** – The main advocacy strategy being pursued.
+**Audience Type** – The primary group whose attitudes or behaviour the campaign seeks to influence.  
+**Geography** – The political and institutional environment in which advocacy occurs.  
+**Stakeholder Type** – Actors who influence policy discourse or public opinion.  
+**Campaign Type** – The strategic objective of the campaign.
 """)
 
 audience = st.selectbox(
@@ -50,7 +51,7 @@ campaign = st.selectbox(
 )
 
 # ---------------------------------------------------
-# Behaviour Questionnaire
+# Behavioural Questionnaire
 # ---------------------------------------------------
 
 st.header("Behavioural Questionnaire")
@@ -66,10 +67,9 @@ Please rate each statement using the scale below:
 **4 – Agree**  
 **5 – Strongly Agree**
 
-Your responses help the tool estimate which **moral foundations** are most influential
-for the selected audience profile. These moral priorities are then combined with the
-audience type and campaign context to generate strategic recommendations for advocacy
-communication.
+Your responses help estimate which **moral foundations** are most influential
+for this audience. The tool then combines this moral profile with the selected
+audience and campaign context to generate advocacy insights.
 """)
 
 questions = {
@@ -77,16 +77,16 @@ questions = {
 "Care1":"Public policies should prioritise reducing suffering whenever possible.",
 "Care2":"Protecting vulnerable groups should be a central goal of social policy.",
 
-"Fairness1":"Justice and fairness should guide policy decisions even if they require economic trade-offs.",
+"Fairness1":"Justice and fairness should guide policy decisions even when trade-offs exist.",
 "Fairness2":"Systems should ensure that everyone is treated equally under the rules.",
 
-"Authority1":"Respect for institutions and leadership is important for maintaining social order.",
+"Authority1":"Respect for institutions is important for maintaining social stability.",
 "Authority2":"Policies should reinforce trust in established institutions.",
 
-"Loyalty1":"People should feel a strong sense of responsibility toward their community.",
+"Loyalty1":"People should feel a strong responsibility toward their community.",
 "Loyalty2":"Supporting one's social group is an important moral value.",
 
-"Purity1":"Society should uphold strong ethical standards in both public and private life.",
+"Purity1":"Society should uphold strong ethical standards in public life.",
 "Purity2":"Maintaining moral integrity is essential for a healthy society."
 }
 
@@ -96,98 +96,151 @@ for q in questions:
     scores[q] = st.slider(questions[q],1,5,3)
 
 # ---------------------------------------------------
-# Calculate foundation scores
+# Score Calculation
 # ---------------------------------------------------
 
-care_score = (scores["Care1"] + scores["Care2"]) / 2
-fairness_score = (scores["Fairness1"] + scores["Fairness2"]) / 2
-authority_score = (scores["Authority1"] + scores["Authority2"]) / 2
-loyalty_score = (scores["Loyalty1"] + scores["Loyalty2"]) / 2
-purity_score = (scores["Purity1"] + scores["Purity2"]) / 2
+care = (scores["Care1"] + scores["Care2"]) / 2
+fairness = (scores["Fairness1"] + scores["Fairness2"]) / 2
+authority = (scores["Authority1"] + scores["Authority2"]) / 2
+loyalty = (scores["Loyalty1"] + scores["Loyalty2"]) / 2
+purity = (scores["Purity1"] + scores["Purity2"]) / 2
 
 foundation_scores = {
-"Care":care_score,
-"Fairness":fairness_score,
-"Authority":authority_score,
-"Loyalty":loyalty_score,
-"Purity":purity_score
+"Care":care,
+"Fairness":fairness,
+"Authority":authority,
+"Loyalty":loyalty,
+"Purity":purity
 }
 
 dominant = max(foundation_scores, key=foundation_scores.get)
 
 # ---------------------------------------------------
-# Analysis Text
+# Audience Profile Analysis
 # ---------------------------------------------------
 
 foundation_analysis = {
 
 "Care":
-"""The responses suggest that compassion and harm reduction are likely to
-be particularly influential moral considerations for this audience.
-When audiences prioritize the Care foundation, they tend to respond strongly
-to narratives that highlight suffering, vulnerability, and the responsibility
-to protect others from harm. Advocacy campaigns targeting such audiences
-often benefit from storytelling, concrete examples, and evidence showing how
-policy decisions affect real lives. By connecting reforms to the reduction of
-suffering and the protection of vulnerable groups, campaigns can make ethical
-arguments feel immediate and compelling.""",
+"""The responses indicate that compassion and harm reduction are likely to be
+central moral considerations for this audience. When audiences prioritise the
+Care foundation, they tend to respond strongly to narratives that highlight
+the real-world consequences of suffering and vulnerability. Advocacy messages
+that illustrate how policy choices affect individuals, communities, or animals
+in tangible ways are therefore more likely to resonate. When combined with the
+selected audience profile and campaign context, this moral orientation suggests
+that persuasive communication should emphasise empathy, responsibility, and
+the possibility of reducing harm through practical reforms.""",
 
 "Fairness":
-"""This audience appears especially responsive to concerns related to justice,
-equity, and fair treatment. Individuals who prioritise the Fairness foundation
-often evaluate issues by asking whether systems distribute costs and benefits
-in a balanced way. Advocacy messages that expose hidden inequalities,
-unfair advantages, or structural injustices tend to resonate strongly.
-Campaigns may therefore benefit from highlighting how reforms create a
-more transparent and equitable system.""",
+"""The responses suggest that the audience evaluates issues strongly through
+the lens of justice and equitable treatment. Audiences with a fairness-oriented
+profile often assess policies by asking whether systems distribute costs and
+benefits in a balanced way. Advocacy campaigns targeting such audiences tend
+to be most effective when they highlight hidden inequities or structural
+imbalances and present reforms as mechanisms that restore fairness and
+transparency within institutions and markets.""",
 
 "Authority":
-"""The responses indicate that respect for institutions and social order
-plays an important role in how this audience evaluates policy questions.
-Audiences with a strong Authority orientation often respond positively
-to messages that emphasise responsible governance, institutional integrity,
-and the importance of well-functioning regulatory systems. Advocacy
-campaigns targeting this moral orientation may therefore benefit from
-framing reforms as strengthening institutions rather than challenging them.""",
+"""This profile indicates that respect for institutions and social order
+plays an important role in shaping the audience's moral reasoning.
+Individuals with a strong authority orientation often respond positively
+to arguments that emphasise responsible governance, effective regulation,
+and institutional credibility. Advocacy strategies directed at this
+audience are therefore likely to be most persuasive when reforms are framed
+as strengthening systems and improving oversight rather than disrupting
+existing structures.""",
 
 "Loyalty":
-"""This profile suggests that group identity and collective responsibility
-are influential moral considerations for this audience. Loyalty-oriented
-audiences often respond to narratives that highlight solidarity,
-community wellbeing, and shared responsibility. Advocacy campaigns
-may therefore benefit from emphasising how proposed reforms strengthen
-communities and protect shared values.""",
+"""The responses suggest that collective identity and community solidarity
+are influential considerations for this audience. Individuals who prioritise
+loyalty often interpret policy debates through the lens of shared values
+and group wellbeing. Advocacy messaging that highlights the collective
+benefits of reform and frames change as protecting the interests of the
+community can therefore be particularly effective.""",
 
 "Purity":
-"""The responses suggest sensitivity to moral integrity and ethical
-boundaries. Audiences influenced by the Purity foundation often
-interpret policy debates through the lens of ethical responsibility
-and moral standards. Advocacy messages that frame issues as questions
-of integrity, responsibility, and societal values may therefore
-resonate strongly."""
+"""This profile indicates that ethical integrity and moral responsibility
+play an important role in how the audience evaluates social issues.
+Purity-oriented audiences often respond strongly to arguments that frame
+issues in terms of ethical standards, moral accountability, and the need
+to uphold societal values. Advocacy campaigns targeting such audiences
+may therefore benefit from emphasising integrity, responsibility, and the
+ethical implications of policy decisions."""
 }
 
 # ---------------------------------------------------
-# Strategy Section
+# Reform Orientation
 # ---------------------------------------------------
 
-campaign_strategy_text = f"""
-The campaign strategy suggested by BAAMT is derived from three key inputs:
-the **dominant moral foundation identified in the questionnaire**, the
-**selected audience profile**, and the **campaign context** chosen at the
-beginning of the tool.
+avg_score = sum(foundation_scores.values())/5
 
-Because the dominant moral foundation in this case appears to be **{dominant}**,
-the campaign narrative should emphasise themes that align with this moral
-priority. At the same time, the messaging should be tailored to the selected
-audience group (**{audience}**) and the campaign approach (**{campaign}**).
+if avg_score >=4:
+    reform_orientation = """
+The response pattern suggests that the audience may be relatively open to
+substantial reform when those reforms are presented as morally justified
+and socially beneficial. This indicates a potential receptiveness to
+system-level changes provided that they are framed in ways that align with
+the audience's moral priorities and institutional expectations.
+"""
+else:
+    reform_orientation = """
+The overall response pattern suggests that the audience may prefer gradual
+or incremental reforms rather than disruptive policy shifts. Advocacy
+strategies may therefore benefit from presenting reforms as practical
+improvements that build upon existing systems rather than replacing them
+entirely.
+"""
 
-In practical terms, this means that advocacy messages should combine
-ethical framing that resonates with the {dominant} foundation together
-with examples, policy proposals, or narratives that are appropriate
-for the selected audience. By aligning moral framing with audience
-context, campaigns can increase both the clarity and persuasive power
-of their communication.
+# ---------------------------------------------------
+# Risk Profile
+# ---------------------------------------------------
+
+risk_profile = f"""
+The behavioural profile generated by this assessment suggests several
+strategic risks that advocacy campaigns should consider. First, messaging
+that conflicts with the audience's dominant moral foundation ({dominant})
+may be perceived as unconvincing or ideologically biased. Second, campaigns
+that rely solely on technical evidence without addressing underlying moral
+concerns may fail to engage the audience's intuitive reasoning processes.
+Finally, if the proposed reforms appear overly disruptive relative to the
+audience's reform orientation, the campaign may encounter resistance even
+among individuals who broadly agree with the underlying goals. Recognising
+these risks allows advocacy strategies to anticipate potential objections
+and design narratives that maintain credibility while gradually building
+support for change.
+"""
+
+# ---------------------------------------------------
+# Messaging Strategy
+# ---------------------------------------------------
+
+messaging_strategy = f"""
+The messaging strategy suggested by BAAMT emerges from the interaction
+between three analytical dimensions: the **dominant moral foundation
+identified in the questionnaire ({dominant})**, the **audience profile
+selected at the beginning of the assessment ({audience})**, and the
+**campaign objective ({campaign})**.
+
+Because the dominant moral foundation in this case is **{dominant}**,
+advocacy narratives should foreground themes that resonate with this
+moral priority. However, effective advocacy rarely depends on a single
+dimension alone. Instead, persuasive campaigns align moral framing with
+audience expectations and institutional realities.
+
+For the selected audience group, this means that messages should not only
+reflect the values associated with the {dominant} foundation but also
+connect those values to concrete policy choices, behavioural practices,
+or institutional reforms. The campaign context further shapes the tone
+and emphasis of the messaging strategy. Behaviour change campaigns may
+focus on individual choices and social norms, while policy advocacy
+campaigns may highlight regulatory solutions, governance mechanisms,
+and institutional accountability.
+
+In practice, this integrated strategy encourages advocates to combine
+ethical framing with credible evidence and relatable examples. By doing
+so, campaigns can speak simultaneously to the audience's intuitive moral
+concerns and their practical expectations about how social change occurs.
 """
 
 # ---------------------------------------------------
@@ -197,19 +250,19 @@ of their communication.
 example_messages = {
 
 "Care":
-"Example message: 'Policy reforms can significantly reduce suffering and create a more compassionate society. By supporting responsible reforms today, we can protect vulnerable populations and build systems that reflect our shared commitment to wellbeing.'",
+"Policy reforms can significantly reduce suffering and create a more compassionate society. By supporting responsible changes today, we can protect vulnerable populations while building systems that reflect our shared commitment to wellbeing.",
 
 "Fairness":
-"Example message: 'A fair system ensures that responsibility is shared and that no group bears hidden costs. Transparent policies help create markets and institutions that reward ethical practices.'",
+"A fair system ensures that responsibilities are shared and that hidden costs are not passed on to society. Transparent policies help create institutions that reward ethical practices rather than exploit vulnerabilities.",
 
 "Authority":
-"Example message: 'Strong institutions depend on clear standards and responsible governance. Strengthening oversight helps ensure that systems operate with integrity and public trust.'",
+"Strong institutions depend on clear standards and responsible governance. Strengthening oversight ensures that systems operate with integrity and maintain public trust.",
 
 "Loyalty":
-"Example message: 'Communities thrive when we work together to protect shared values. Supporting responsible reforms strengthens the wellbeing of our society as a whole.'",
+"Our communities thrive when we work together to protect shared values. Responsible reforms help ensure that social systems continue to serve the collective interests of society.",
 
 "Purity":
-"Example message: 'Societies are judged by the standards they uphold. Ensuring ethical responsibility in policy and industry helps maintain the integrity of our institutions.'"
+"Societies are judged by the standards they uphold. Ensuring ethical responsibility in policy and industry helps maintain the moral integrity of our institutions."
 }
 
 # ---------------------------------------------------
@@ -219,15 +272,18 @@ example_messages = {
 if st.button("Generate Report"):
 
     st.header("Audience Profile Analysis")
-
     st.write(foundation_analysis[dominant])
 
-    st.header("Campaign Strategy")
+    st.header("Reform Orientation")
+    st.write(reform_orientation)
 
-    st.write(campaign_strategy_text)
+    st.header("Risk Profile")
+    st.write(risk_profile)
+
+    st.header("Messaging Strategy")
+    st.write(messaging_strategy)
 
     st.header("Example Advocacy Messaging")
-
     st.write(example_messages[dominant])
 
     report = f"""
@@ -240,11 +296,17 @@ Campaign Type: {campaign}
 
 Dominant Moral Foundation: {dominant}
 
-Audience Interpretation:
+Audience Profile Analysis:
 {foundation_analysis[dominant]}
 
-Campaign Strategy:
-{campaign_strategy_text}
+Reform Orientation:
+{reform_orientation}
+
+Risk Profile:
+{risk_profile}
+
+Messaging Strategy:
+{messaging_strategy}
 
 Example Message:
 {example_messages[dominant]}
