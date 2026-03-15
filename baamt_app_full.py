@@ -425,30 +425,58 @@ st.divider()
             pdf.cell(0,7,line,ln=True)
 
     pdf.set_font("Arial","B",16)
-    pdf.cell(0,10,"BAAMT Advocacy Strategy Report",ln=True)
+       if st.button("Generate BAAMT Strategy Report"):
 
+    # 1. Behavioural Segment
+    st.subheader("Behavioural Segment")
+    st.write(segment)
+
+    # 2. Reform Orientation
+    st.subheader("Reform Orientation")
+    st.write(reform)
+
+    # ... other sections ...
+
+    st.divider()
+
+    # ---------- FORMATTED PDF REPORT ----------
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
+
+    def add_section(title, text):
+        pdf.ln(4)
+        pdf.set_font("Arial", "B", 12)
+        pdf.cell(0, 8, title, ln=True)
+        pdf.set_font("Arial", "", 11)
+        wrapped = textwrap.wrap(text, 90)
+        for line in wrapped:
+            pdf.cell(0, 7, line, ln=True)
+
+    pdf.set_font("Arial", "B", 16)
+    pdf.cell(0, 10, "BAAMT Advocacy Strategy Report", ln=True)
     pdf.ln(5)
+    pdf.set_font("Arial", "", 11)
+    pdf.cell(0, 8, f"Audience: {audience}", ln=True)
+    pdf.cell(0, 8, f"Geography: {geography}", ln=True)
+    pdf.cell(0, 8, f"Stakeholder: {stakeholder}", ln=True)
+    pdf.cell(0, 8, f"Campaign Objective: {campaign}", ln=True)
 
-    pdf.set_font("Arial","",11)
-    pdf.cell(0,8,f"Audience: {audience}",ln=True)
-    pdf.cell(0,8,f"Geography: {geography}",ln=True)
-    pdf.cell(0,8,f"Stakeholder: {stakeholder}",ln=True)
-    pdf.cell(0,8,f"Campaign Objective: {campaign}",ln=True)
+    add_section("Behavioural Segment", segment)
+    add_section("Reform Orientation", reform)
+    add_section("Risk Sensitivity Profile", risk)
+    add_section("Institutional Trust Orientation", trust)
+    add_section("Primary Advocacy Lever", lever)
+    add_section("Geographic Messaging Adjustment", geo)
+    add_section("Campaign Strategy Plan", strategy)
+    add_section("Advocacy Strategy Brief", brief)
 
-    add_section("Behavioural Segment",segment)
-    add_section("Reform Orientation",reform)
-    add_section("Risk Sensitivity Profile",risk)
-    add_section("Institutional Trust Orientation",trust)
-    add_section("Primary Advocacy Lever",lever)
-    add_section("Geographic Messaging Adjustment",geo)
-    add_section("Campaign Strategy Plan",strategy)
-    add_section("Advocacy Strategy Brief",brief)
-    add_section("Message Framing Examples",framing)
-    add_section("Coalition Strategy",coalition)
-    add_section("Policy Pathway",policy)
-    add_section("Opposition Risk Analysis",risk_analysis)
+    add_section("Message Framing Examples", framing)
+    add_section("Coalition Strategy", coalition)
+    add_section("Policy Pathway", policy)
+    add_section("Opposition Risk Analysis", risk_analysis)
 
-    pdf_bytes=bytes(pdf.output(dest="S"))
+    pdf_bytes = bytes(pdf.output(dest="S"))
 
     st.download_button(
         label="Download BAAMT Report (PDF)",
