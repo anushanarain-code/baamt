@@ -1,215 +1,175 @@
 import streamlit as st
-import pandas as pd
-import matplotlib.pyplot as plt
-from fpdf import FPDF
+
+# ---------------------------------------------------
+# PAGE CONFIG
+# ---------------------------------------------------
+
+st.set_page_config(
+    page_title="BAAMT",
+    page_icon="🧠",
+    layout="centered"
+)
+
+# ---------------------------------------------------
+# TITLE
+# ---------------------------------------------------
+
+st.title("🧠 BAAMT")
+st.subheader("Behavioural Advocacy and Messaging Tool")
+
+st.markdown("""
+BAAMT helps advocacy organizations design messaging strategies based on
+the moral values of their target audience.
+
+Complete the assessment below to generate a behavioural profile and
+recommended messaging strategy.
+""")
 
 st.markdown("---")
 
+# ---------------------------------------------------
+# AUDIENCE INFORMATION
+# ---------------------------------------------------
 
-import streamlit as st
+st.header("Audience Information")
+
+audience_type = st.selectbox(
+    "Select Target Audience",
+    [
+        "General Public",
+        "Students",
+        "Policy Makers",
+        "Industry Stakeholders",
+        "Civil Society",
+        "Other"
+    ]
+)
+
+geography = st.selectbox(
+    "Select Geography",
+    [
+        "India",
+        "Global",
+        "Other"
+    ]
+)
+
+campaign_type = st.selectbox(
+    "Select Campaign Type",
+    [
+        "Behaviour Change",
+        "Policy Advocacy",
+        "Corporate Engagement",
+        "Public Awareness"
+    ]
+)
 
 st.markdown("---")
-# baamt_app_full.py
-import streamlit as st
-from fpdf import FPDF
-import pandas as pd
-import matplotlib.pyplot as plt
 
-# -----------------------------
-# Function to generate PDF
-# -----------------------------
-def generate_pdf(results, filename="BAAMT_Report.pdf"):
-    pdf = FPDF()
-    pdf.add_page()
-    pdf.set_auto_page_break(auto=True, margin=15)
-    pdf.set_font("Arial", size=12)
+# ---------------------------------------------------
+# MORAL QUESTIONNAIRE
+# ---------------------------------------------------
 
-    # Title
-    pdf.set_font("Helvetica", 'B', 16)
-    pdf.multi_cell(0, 10, "BAAMT - Behavioural Advocacy and Messaging Tool", align='C')
-    pdf.ln(5)
-    pdf.set_font("Arial", size=12)
+st.header("Behavioural Assessment")
 
-    # Add each section
-    for section, text in results.items():
-        pdf.set_font("Arial", 'B', 14)
-        pdf.multi_cell(0, 8, str(text))
-        pdf.set_font("Helvetica", size=12)
-        pdf.multi_cell(0, 8, text)
-        pdf.ln(5)
+st.markdown("Rate the following statements from **1 (Strongly Disagree) to 5 (Strongly Agree)**.")
 
-    pdf.output(filename)
-    return filename
+q1 = st.slider("Preventing suffering should be a top priority in public policy.", 1, 5)
+q2 = st.slider("Fair treatment matters even if it requires economic trade-offs.", 1, 5)
+q3 = st.slider("Society functions best when people respect authority and institutions.", 1, 5)
+q4 = st.slider("Loyalty to one's community should guide political decision-making.", 1, 5)
+q5 = st.slider("Purity and moral cleanliness are important social values.", 1, 5)
 
-# -----------------------------
-# Streamlit App
-# -----------------------------
-st.title("BAAMT - Behavioural Advocacy and Messaging Tool")
-st.write("BAAMT helps advocacy organizations design messaging strategies based on the moral values of their target audience. Users answer a short questionnaire estimating how their target audience might respond to various moral statements. The tool then generates a moral communication profile and recommended advocacy strategies.")
+q6 = st.slider("Avoiding harm to vulnerable beings is an ethical responsibility.", 1, 5)
+q7 = st.slider("Rules and laws should be followed even when inconvenient.", 1, 5)
+q8 = st.slider("People should prioritize fairness in markets and economic systems.", 1, 5)
+q9 = st.slider("Communities should protect their cultural traditions.", 1, 5)
+q10 = st.slider("Certain practices are morally wrong regardless of consequences.", 1, 5)
 
-st.write("**Instructions:** Please answer based on how strongly you believe your target audience would agree with the following statements (1=Strongly disagree, 5=Strongly agree).")
+st.markdown("---")
 
-# -----------------------------
-# Audience Inputs
-# -----------------------------
-st.subheader("Audience Information")
-target_audience = st.selectbox("Select Target Audience", ["Policymakers", "Corporations", "Consumers", "Scientists", "NGOs"])
-geography = st.selectbox("Select Geography", ["Global", "US", "EU", "India", "Other"])
-stakeholder_level = st.selectbox("Select Stakeholder Level", ["Institutional", "Corporate", "Public"])
-campaign_type = st.selectbox("Select Campaign Type", ["Awareness", "Corporate commitment", "Regulation", "Welfare standards", "Behaviour change"])
+# ---------------------------------------------------
+# CALCULATE SCORES
+# ---------------------------------------------------
 
-# -----------------------------
-# Moral Questionnaire
-col1, col2 = st.columns([1,1])
+care_score = (q1 + q6) / 2
+fairness_score = (q2 + q8) / 2
+authority_score = (q3 + q7) / 2
+loyalty_score = (q4 + q9) / 2
+purity_score = (q5 + q10) / 2
 
-with col1:
-    st.header("Audience Assessment")
+# ---------------------------------------------------
+# RESULTS
+# ---------------------------------------------------
 
-    # your questions go here
-# -----------------------------
-st.subheader("Moral Questionnaire")
-questions = [
-    "1. Preventing suffering should be a top priority in public policy.",
-    "2. Fair treatment matters even if it requires economic trade-offs.",
-    "3. Society functions best when people respect authority and institutions.",
-    "4. Loyalty to one's community should guide political decision-making.",
-    "5. Purity and moral cleanliness are important social values.",
-    "6. Avoiding harm to vulnerable beings is an ethical responsibility.",
-    "7. Rules and laws should be followed even when inconvenient.",
-    "8. People should prioritize fairness in markets and economic systems.",
-    "9. Communities should protect their cultural traditions.",
-    "10. Certain practices are morally wrong regardless of consequences."
-]
+st.header("Audience Moral Profile")
 
-responses = []
-for q in questions:
-    responses.append(st.slider(q, 1, 5, 3))
-with col2:
-    st.header("Behavioural Profile")
-
-    # scoring results here
-# -----------------------------
-# Moral Foundation Calculation
-# -----------------------------
-care_score = (responses[0] + responses[5]) / 2
-fairness_score = (responses[1] + responses[7]) / 2
-authority_score = (responses[2] + responses[6]) / 2
-loyalty_score = (responses[3] + responses[8]) / 2
-purity_score = (responses[4] + responses[9]) / 2
-
-scores = {
-    "Care/Harm": care_score,
-    "Fairness": fairness_score,
-    "Authority": authority_score,
-    "Loyalty": loyalty_score,
-    "Purity": purity_score
-}
-
-primary_moral = max(scores, key=scores.get)
-
-# -----------------------------
-# Strategy Messages (sample)
-# -----------------------------
-strategy_texts = {
-    "Care/Harm": {
-        "Primary Message": "Audiences scoring highly on Care/Harm respond strongly to messaging emphasizing compassion, humane treatment, and preventing unnecessary suffering. Build campaigns around empathy and harm reduction.",
-        "Secondary Message": "Use stories, visual evidence, and narratives illustrating suffering and humane solutions.",
-        "Campaign Strategy": "Public awareness campaigns focused on animal welfare and harm reduction.",
-        "Advocacy Lever": "Emphasize compassion, welfare standards, and humane treatment.",
-        "Moral Interpretation": "Focus on empathy, care, and protection of vulnerable beings."
-    },
-    "Fairness": {
-        "Primary Message": "Audiences scoring highly on Fairness respond to messaging highlighting justice, ethical responsibility, and equity.",
-        "Secondary Message": "Use examples showing fairness in policy and corporate practices.",
-        "Campaign Strategy": "Policy advocacy campaigns emphasizing fairness and equity.",
-        "Advocacy Lever": "Regulatory reform and ethical standards.",
-        "Moral Interpretation": "Emphasize justice and ethical responsibility."
-    },
-    "Authority": {
-        "Primary Message": "Audiences scoring highly on Authority respond to messaging emphasizing respect for institutions and compliance with rules.",
-        "Secondary Message": "Highlight standards, regulations, and institutional frameworks.",
-        "Campaign Strategy": "Institutional engagement and regulatory compliance campaigns.",
-        "Advocacy Lever": "Law, regulation, and institutional norms.",
-        "Moral Interpretation": "Focus on respect for authority and rules."
-    },
-    "Loyalty": {
-        "Primary Message": "Audiences scoring highly on Loyalty respond to messaging emphasizing community protection and shared values.",
-        "Secondary Message": "Highlight local traditions and communal responsibility.",
-        "Campaign Strategy": "Coalition building and national policy campaigns.",
-        "Advocacy Lever": "Community and cultural norms.",
-        "Moral Interpretation": "Focus on protecting the group and shared values."
-    },
-    "Purity": {
-        "Primary Message": "Audiences scoring highly on Purity respond to messaging emphasizing moral cleanliness and ethical boundaries.",
-        "Secondary Message": "Use examples highlighting ethical and cultural norms.",
-        "Campaign Strategy": "Cultural messaging and social norms campaigns.",
-        "Advocacy Lever": "Ethical and social purity.",
-        "Moral Interpretation": "Focus on moral boundaries and preventing contamination."
-    }
-}
-st.subheader("Moral Foundation Scores")
-
-st.write("Care / Harm")
+st.write("Care / Harm:", round(care_score, 2))
 st.progress(care_score / 5)
 
-st.write("Fairness")
+st.write("Fairness:", round(fairness_score, 2))
 st.progress(fairness_score / 5)
 
-st.write("Authority")
+st.write("Authority:", round(authority_score, 2))
 st.progress(authority_score / 5)
 
-st.write("Loyalty")
+st.write("Loyalty:", round(loyalty_score, 2))
 st.progress(loyalty_score / 5)
 
-st.write("Purity")
+st.write("Purity:", round(purity_score, 2))
 st.progress(purity_score / 5)
 
-# -----------------------------
-# Show Results
-# -----------------------------
-st.subheader("Audience Moral Profile")
-for foundation, score in scores.items():
-    st.write(f"{foundation}: {score}")
+st.markdown("---")
 
-st.write(f"**Dominant Moral Foundation:** {primary_moral}")
+# ---------------------------------------------------
+# MESSAGING STRATEGY
+# ---------------------------------------------------
 
-# -----------------------------
-# Bar Chart
-# -----------------------------
-st.subheader("Moral Foundations Chart")
-plt.bar(scores.keys(), scores.values(), color='skyblue')
-plt.ylim(0, 5)
-plt.ylabel("Score")
-plt.xlabel("Moral Foundations")
-st.pyplot(plt)
+st.header("Recommended Messaging Strategy")
 
-# -----------------------------
-# Show Strategy
-# -----------------------------
-st.subheader("Recommended Messaging Strategy")
-strategy = strategy_texts[primary_moral]
+dominant_value = max(
+    care_score,
+    fairness_score,
+    authority_score,
+    loyalty_score,
+    purity_score
+)
 
-for section, text in strategy.items():
-    st.write(f"**{section}:** {text}")
+if dominant_value == care_score:
+    st.success(
+        "Primary Frame: Compassion and harm reduction.\n\n"
+        "Messaging should highlight suffering, humane responsibility, "
+        "and protecting vulnerable beings."
+    )
 
-# -----------------------------
-# Download PDF Button
-# -----------------------------
-st.subheader("Download Full Strategy Report")
-results_for_pdf = {
-    "Audience Moral Profile": "\n".join([f"{k}: {v}" for k,v in scores.items()]),
-    "Primary Message": strategy["Primary Message"],
-    "Secondary Message": strategy["Secondary Message"],
-    "Campaign Strategy": strategy["Campaign Strategy"],
-    "Advocacy Lever": strategy["Advocacy Lever"],
-    "Moral Interpretation": strategy["Moral Interpretation"],
-}
+elif dominant_value == fairness_score:
+    st.success(
+        "Primary Frame: Justice and fairness.\n\n"
+        "Messaging should focus on ethical systems, fairness, "
+        "and correcting imbalances."
+    )
 
-# pdf_file = generate_pdf(results_for_pdf)
+elif dominant_value == authority_score:
+    st.success(
+        "Primary Frame: Respect for institutions and rules.\n\n"
+        "Messaging should highlight regulation, governance, "
+        "and responsible leadership."
+    )
 
-#st.download_button(
-#    label="Download PDF Report",
-#    data=open(pdf_file, "rb"),
-#    file_name="BAAMT_Report.pdf",
-#    mime="application/pdf"
-# )
+elif dominant_value == loyalty_score:
+    st.success(
+        "Primary Frame: Community protection.\n\n"
+        "Messaging should emphasize collective responsibility, "
+        "national or community values, and protecting shared identity."
+    )
+
+else:
+    st.success(
+        "Primary Frame: Purity and moral integrity.\n\n"
+        "Messaging should focus on moral standards, "
+        "ethical consumption, and avoiding contamination."
+    )
+
+st.markdown("---")
+
+st.info("BAAMT provides indicative behavioural guidance. Messaging strategies should be adapted to local context.")
